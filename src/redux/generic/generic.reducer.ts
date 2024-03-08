@@ -70,7 +70,7 @@ const genericReducer = (
         dropDownData: null,
         loading: false,
       };
-
+      
     case GET_ALL_NOTIFICATION_SUCCESS:
       return {
         ...state,
@@ -112,7 +112,6 @@ const genericReducer = (
         countryData: null,
         loading: false,
       };
-
     case GET_STATES_SUCCESS:
       return {
         ...state,
@@ -126,7 +125,6 @@ const genericReducer = (
         stateData: null,
         loading: false,
       };
-
     case GET_CITY_SUCCESS:
       return {
         ...state,
