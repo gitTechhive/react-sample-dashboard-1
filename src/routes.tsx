@@ -12,6 +12,8 @@ import AuthRoute from './common/AuthRoute';
 import NotFound from './components/NotFound/NotFound';
 import UserMangement from './pages/admin/UserMangement/UserMangement';
 import { jwtDecode } from "jwt-decode";
+import Signup from './pages/auth/Signup/Signup';
+import ForgotPassword from './pages/auth/FrogotPassword/ForgotPassword';
 
 
 const privateRoutes: RouterProps[] = [
@@ -39,6 +41,16 @@ const publicRoutes: RouterProps[] = [
   {
     path: ENUMFORROUTES.LOGIN,
     component: <Login />,
+    caseSensitive: true,
+  },
+  {
+    path: ENUMFORROUTES.SIGNUP,
+    component: <Signup />,
+    caseSensitive: true,
+  },
+  {
+    path: ENUMFORROUTES.FORGOTPASSWORD,
+    component: <ForgotPassword />,
     caseSensitive: true,
   },
 

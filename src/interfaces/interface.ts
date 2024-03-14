@@ -23,8 +23,10 @@ export const ENUMFORROUTES = {
   DASHBOARD: "/dashboard",
   REPORTS: "/reports",
   LOGIN:"/login",
-ACCESS_DENIED:"/access-denied",
-USER_MANGEMNET:"/user-mangemnet",
+  SIGNUP:"/signup",
+  FORGOTPASSWORD:"/forgot-password",
+  ACCESS_DENIED:"/access-denied",
+  USER_MANGEMNET:"/user-mangemnet",
 
 }
 
