@@ -63,14 +63,12 @@ const genericReducer = (
         dropDownData: action.payload,
         loading: false,
       };
-
     case GET_DATA_FOR_DROPDOWN_FAILURE:
       return {
         ...state,
         dropDownData: null,
         loading: false,
       };
-      
     case GET_ALL_NOTIFICATION_SUCCESS:
       return {
         ...state,
