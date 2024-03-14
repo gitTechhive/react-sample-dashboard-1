@@ -1,0 +1,148 @@
+
+.auth-wrapper{
+    
+    .login-wrapper{
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #FCFCFC;
+        .login-left{
+            max-width: 630px;
+            width: 630px;
+            flex: 0 0 630px;
+            padding: 100px;
+            position: relative;
+            .auth-bg-shape{
+                content: "";
+                position: absolute;
+                top: -70px;
+                left: 50%;
+                transform: translateX(-50%);
+                
+                width: 400px;
+                height: 400px;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    z-index: -1;
+                }
+            }
+            .auth-title{
+                text-align: center;
+                margin-bottom: 22px;
+                position: relative;
+                z-index: 1;
+                img{
+                    width: 48px;
+                    height: 48px;
+                    object-fit: contain;
+                    margin: 0 auto;
+                    margin-bottom: 22px;
+                }
+                h1{
+                    font-size: 32px;
+                    font-weight: 600;
+                    line-height: 40px;
+                    letter-spacing: -0.03em;
+                    color: #1A1D1F;
+                }
+                p{
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 24px;
+                    letter-spacing: -0.01em;
+                    color: #33383F;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    span{
+                        color: $primary_color;
+                    }
+                    a{
+                        font-size: 16px;
+                        color: $text_color;
+                        margin-left: 5px;
+                    }
+                }
+            }
+            .nav-tabs-auth{
+                padding-bottom: 32px;
+                border-bottom: 2px solid #EFEFEF;
+                position: relative;
+                z-index: 1;
+                .nav-tabs{
+                    background-color: #F4F4F4;
+                    padding: 4px;
+                    border-radius: 40px;
+                    border: 0px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    .nav-item {
+                        width: 100%;
+                        .nav-link{
+                            background-color: transparent;
+                            font-size: 15px;
+                            font-weight: 600;
+                            line-height: 24px;
+                            letter-spacing: -0.01em;
+                            text-align: left;
+                            color: #6F767E;
+                            border: 0px;
+                            border-radius: 40px;
+                            width: 100%;
+                            text-align: center;
+                            min-height: auto;
+                            padding: 12px;
+                            &.active{
+                                background-color: $primary_color;
+                                color: $white_color;
+                            }
+                            i{
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+            .auth-form{
+                padding-top: 32px;
+                position: relative;
+                z-index: 1;
+                &.otp-form{
+                    padding-top: 0px;
+                }
+                p{
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 24px;
+                    letter-spacing: -0.01em;
+                    text-align: left;
+                    margin-bottom: 12px;
+                }
+            }
+            
+        }
+        .login-right{
+            background-color: #F4F4F4;
+            width: 100%;
+            flex: 0 0 calc(100% - 630px);
+            max-width: calc(100% - 630px);
+            height: 100vh;
+            .login-right-auth-image{
+                width: 100%;
+                height: 100%;
+                padding: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img{
+                    
+                }
+            }
+        }
+    }
+}
+
