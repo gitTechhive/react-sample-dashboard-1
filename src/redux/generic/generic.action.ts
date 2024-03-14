@@ -25,67 +25,130 @@ import {
 
 
 
-
-export const getDataForDropdownSuccess = (obj): RooteAction => {
+/**
+ * Action creator for successful retrieval of data for dropdowns.
+ * @param obj Data for dropdowns.
+ * @returns Action object.
+ */
+export const getDataForDropdownSuccess = (obj: any): RooteAction => {
   return { type: GET_DATA_FOR_DROPDOWN_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed retrieval of data for dropdowns.
+ * @returns Action object.
+ */
 export const getDataForDropdownFailure = (): RooteAction => {
   return { type: GET_DATA_FOR_DROPDOWN_FAILURE, payload: {} };
 };
 
-
+/**
+ * Action creator for successful retrieval of all notifications.
+ * @param obj Notification data.
+ * @returns Action object.
+ */
 export const getAllNotificationSuccess = (obj: any): RooteAction => {
   return { type: GET_ALL_NOTIFICATION_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed retrieval of all notifications.
+ * @returns Action object.
+ */
 export const getAllNotificationFailure = (): RooteAction => {
   return { type: GET_ALL_NOTIFICATION_FAILURE, payload: {} };
 };
 
-export const getWebSocketSuccess = (obj): RooteAction => {
+/**
+ * Action creator for successful WebSocket connection.
+ * @param obj WebSocket connection data.
+ * @returns Action object.
+ */
+export const getWebSocketSuccess = (obj: any): RooteAction => {
   return { type: GET_WEBSOCKET_CONNECTION_SUCCESS, payload: true };
 };
 
-export const getWebSocketFailure = (obj): RooteAction => {
+/**
+ * Action creator for failed WebSocket connection.
+ * @param obj WebSocket connection data.
+ * @returns Action object.
+ */
+export const getWebSocketFailure = (obj: any): RooteAction => {
   return { type: GET_WEBSOCKET_CONNECTION_FAILURE, payload: false };
 };
+
+/**
+ * Action creator for successful retrieval of states.
+ * @param obj State data.
+ * @returns Action object.
+ */
 export const getStatesSuccess = (obj: any): RooteAction => {
   return { type: GET_STATES_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed retrieval of states.
+ * @returns Action object.
+ */
 export const getStatesFailure = (): RooteAction => {
   return { type: GET_STATES_FAILURE, payload: {} };
 };
+
+/**
+ * Action creator for successful retrieval of cities.
+ * @param obj City data.
+ * @returns Action object.
+ */
 export const getCitySuccess = (obj: any): RooteAction => {
   return { type: GET_CITY_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed retrieval of cities.
+ * @returns Action object.
+ */
 export const getCityFailure = (): RooteAction => {
   return { type: GET_CITY_FAILURE, payload: {} };
 };
 
-
+/**
+ * Action creator for successful retrieval of countries.
+ * @param obj Country data.
+ * @returns Action object.
+ */
 export const getCountrySuccess = (obj: any): RooteAction => {
   return { type: GET_COUNTRY_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed retrieval of countries.
+ * @returns Action object.
+ */
 export const getCountryFailure = (): RooteAction => {
   return { type: GET_COUNTRY_FAILURE, payload: {} };
 };
 
-
-
+/**
+ * Action creator for resetting generic data.
+ * @returns Action object.
+ */
 export const resetGenericData = (): RooteAction => {
   return { type: RESET_GENERIC_DATA, payload: {} };
 };
 
-
-
-export const defaultReduxSuccess = (obj): RooteAction => {
+/**
+ * Action creator for successful default Redux operation.
+ * @param obj Data for default Redux operation.
+ * @returns Action object.
+ */
+export const defaultReduxSuccess = (obj: any): RooteAction => {
   return { type: DEFAULT_REDUX_SUCCESS, payload: obj };
 };
 
+/**
+ * Action creator for failed default Redux operation.
+ * @returns Action object.
+ */
 export const defaultReduxFailure = (): RooteAction => {
   return { type: DEFAULT_REDUX_FAILURE, payload: {} };
 };

@@ -2,6 +2,12 @@ import React from 'react'
 import { useLocation,Navigate } from 'react-router-dom';
 import { getToken, isNullUndefinedOrBlank } from '../Utility/Helper';
 import { ENUMFORROUTES } from '../interfaces/interface';
+/**
+ * AuthRoute component renders the children only if the user is authenticated,
+ * otherwise redirects to the login page.
+ *
+ * @param children The JSX element to be rendered if the user is authenticated.
+ */
 
 const AuthRoute = ({ children }: { children: JSX.Element }) => {
   //roles rights start
@@ -38,8 +44,8 @@ const AuthRoute = ({ children }: { children: JSX.Element }) => {
 //roles rights end
 
 
-
-const isAuthenticated = getToken() !== null ? true : false; // get Token or flag from Localstorage for dynamic
+/**get Token or flag from Localstorage for dynamic  */
+const isAuthenticated = getToken() !== null ? true : false; 
 const location = useLocation();
 // const array: any = [];
 

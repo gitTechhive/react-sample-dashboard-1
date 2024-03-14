@@ -8,17 +8,24 @@ import { RootState } from './redux/store';
 import { connect } from 'react-redux';
 import AppRouter from './routes';
 
-
+/**
+ * App Component
+ * @param {object} props - Props passed to the component
+ * @returns {JSX.Element} JSX element representing the App component
+ */
 function App(props) {
+  /** Flag variable for toaster position */
   const flg = false;
 
   return (
     <div >
+      {/* Toaster component for displaying notifications */}
       <Toaster position="top-right" reverseOrder={flg} />
+      {/* Loader component to show loading indicator */}
       <Loader loading={props.appReducer.loading} />
-   
-        <AppRouter />
-   
+      {/* AppRouter component for routing */}
+      <AppRouter />
+
 
     </div>
   );

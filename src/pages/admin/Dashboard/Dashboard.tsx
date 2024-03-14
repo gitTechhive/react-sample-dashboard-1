@@ -2,6 +2,10 @@ import React from 'react'
 import { ENUMFORROUTES } from '../../../interfaces/interface'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap';
+/**
+ * Dashboard Component
+ * @returns {JSX.Element} JSX element representing the Dashboard component
+ */
 
 const Dashboard = (props) => {
   const navigate=useNavigate();

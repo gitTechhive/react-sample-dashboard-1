@@ -5,6 +5,10 @@ import "./pagination.scss";
 import PropTypes from "prop-types";
 import { PaginationProps } from "../interfaces/index";
 import { Button, Form } from 'react-bootstrap';
+/**
+ * Pagination component
+ * @param {PaginationProps} props - Props for Pagination component
+ */
 const Pagination = (props: PaginationProps) => {
   const {
     onPageChange,
@@ -27,19 +31,19 @@ const Pagination = (props: PaginationProps) => {
   if (currentPage === 0 || paginationRange?.length < 1) {
     return null;
   }
-
+  /** Handle next page click */
   const onNext = () => {
     onPageChange(currentPage + 1);
   };
-
+  /** Handle previous page click  */
   const onPrevious = () => {
     onPageChange(currentPage - 1);
   };
-
+  /** Handle page size change */
   const onChangePageSize = (event) => {
     onPageSizeChange(Number(event.target.value));
   };
-
+/** Get last page from pagination range */
   const lastPage =
     paginationRange && paginationRange[paginationRange?.length - 1];
 
@@ -52,14 +56,14 @@ const Pagination = (props: PaginationProps) => {
         {/* {otherHtml ? <div>{otherHtml}</div> : ""} */}
         <div className='pagination-right'>
           <ul>
-            <li   key={Math.random()} className={classnames("previous", {
+            <li key={Math.random()} className={classnames("previous", {
               disabled: currentPage === 1,
             })} ><Button size="sm" onClick={onPrevious}><i className='icon icon-arrow-left-2'></i></Button></li>
 
 
             {paginationRange?.map((pageNumber) => {
               if (pageNumber === DOTS) {
-                return <li  key={Math.random()} className="number"><Button size="sm">...</Button></li>;
+                return <li key={Math.random()} className="number"><Button size="sm">...</Button></li>;
               }
 
               return (

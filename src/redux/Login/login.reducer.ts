@@ -8,13 +8,18 @@ import {
 } from "./login.type";
 
 export interface LoginInitializeState {
+  /** Indicates whether the login was successful */
   loginSuccess: boolean;
+  /**Contains login-related data  */
   loginData: any;
+  /** Indicates whether the logout was successful */
   logoutSuccess: boolean;
+  /** Contains user-related data */
   userData: any;
+  /** Indicates whether an asynchronous operation is in progress */
   loading: boolean;
 }
-
+/** Define the initial state */
 const initialState: LoginInitializeState = {
   loginSuccess: false,
   loginData: [],
@@ -23,6 +28,12 @@ const initialState: LoginInitializeState = {
   loading: false,
 };
 
+/**
+ * Reducer function responsible for managing login-related state.
+ * @param state Current state of the login module. Defaults to initial state if not provided.
+ * @param action Action dispatched to update the state.
+ * @returns Updated state based on the dispatched action.
+ */
 function LoginReducer(
   state: LoginInitializeState = initialState,
   action: RooteAction

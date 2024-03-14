@@ -1,12 +1,24 @@
 import { useMemo } from "react";
 
 export const DOTS = "...";
-
+/**
+ * Generates a range of numbers from start to end inclusive
+ * @param start - Start of the range
+ * @param end - End of the range
+ * @returns An array containing numbers from start to end inclusive
+ */
 const range = (start: number, end: number): number[] => {
   const length: number = end - start + 1;
   return Array.from({ length }, (_, idx) => idx + start);
 };
-
+/**
+ * Custom hook for pagination logic
+ * @param totalCount - Total count of items
+ * @param pageSize - Number of items per page
+ * @param siblingCount - Number of sibling pages to show on each side of the current page
+ * @param currentPage - Current page number
+ * @returns An array representing the range of page numbers to be displayed
+ */
 export const usePagination = ({
   totalCount,
   pageSize,
@@ -15,8 +27,8 @@ export const usePagination = ({
 }) => {
   const paginationRange = useMemo<(string | number)[] | undefined>(() => {
     const totalPageCount: number = Math.ceil(totalCount / pageSize);
-
-    // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
+    
+    /**Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS  */
     const totalPageNumbers: number = siblingCount + 5;
 
     /*

@@ -15,19 +15,19 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <StompSessionProvider
+  // <StompSessionProvider
 
-  url={WEB_SOCKET_CONNECTION_URL}
-  debug={(str) => {
-    console.log(str);
+  // url={WEB_SOCKET_CONNECTION_URL}
+  // debug={(str) => {
+  //   console.log(str);
    
-  }}>
+  // }}>
   <Provider store={store}>
   <React.StrictMode>
     <App />
   </React.StrictMode>
   </Provider>
-  </StompSessionProvider>
+  // </StompSessionProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -9,6 +9,11 @@ import bg_shape from '../../../assets/imgaes/bg-shape.png';
 import { Button, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import AuthSidebar from '../../../components/AuthSidebar/AuthSidebar';
 
+/**
+ * Login Component
+ * @param {object} props - Props passed to the component
+ * @returns {JSX.Element} JSX element representing the Login component
+ */
 const Login = (props) => {
     return (
         <>

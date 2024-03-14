@@ -1,6 +1,8 @@
 
 import Login from '../pages/auth/Login/Login';
-
+/**
+ * Enum for status values.
+ */
 export const ENUMFORSTATUS = {
   PENDING: "Pending",
   INPROGRESS: "Inprogress",
@@ -8,7 +10,9 @@ export const ENUMFORSTATUS = {
   INCOMPLETE: "Incomplete",
 } as const;
 
-
+/**
+ * Enum for stone master tab names.
+ */
 export const ENUMFORSTONEMASTERTAB = {
   LOTSIZE: "LOTSIZE",
   ARTICLE: "ARTICLE",
@@ -17,27 +21,32 @@ export const ENUMFORSTONEMASTERTAB = {
 }
 
 
-
+/**
+ * Enum for route paths.
+ */
 export const ENUMFORROUTES = {
- 
+
   DASHBOARD: "/dashboard",
   REPORTS: "/reports",
-  LOGIN:"/login",
-  SIGNUP:"/signup",
-  FORGOTPASSWORD:"/forgot-password",
-  ACCESS_DENIED:"/access-denied",
-  USER_MANGEMNET:"/user-mangemnet",
+  LOGIN: "/login",
+  ACCESS_DENIED: "/access-denied",
+  USER_MANGEMNET: "/user-mangemnet",
 
 }
 
 
 
-
+/**
+ * Enum for account tab names.
+ */
 export const ENUMFORACCOUNTTAB = {
   PERSONAL_DETAILS: "Personal Details",
-  UPDATE_PASSWORD:"Update Password"
+  UPDATE_PASSWORD: "Update Password"
 
 } as const;
+/**
+ * Response wrapper data transfer object interface.
+ */
 export interface ResponseWrapperDTO {
   status: string;
   message: string;
@@ -49,7 +58,9 @@ export interface ResponseWrapperDTO {
   expires_in?: number;
   account?: string;
 }
-
+/**
+ * Page request interface.
+ */
 export interface PageRequest {
   pageNo: number;
   pageSize: number;
@@ -58,28 +69,36 @@ export interface PageRequest {
   searchText?: string;
   ids?: any;
 }
-
+/**
+ * Common props interface.
+ */
 export interface CommonProps {
   className: string | undefined;
   onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
   searchTxt: string | undefined;
   value: string | number | readonly string[] | undefined;
 }
-
+/**
+ * Modal context props interface.
+ */
 export interface ModalContextProps {
   modal: boolean;
   handleModal: (content?: any, value?: any, dismissModal?: boolean) => void;
   modalContent: any;
   modalValue: any;
 }
-
+/**
+ * Routes list interface.
+ */
 export interface RoutesList {
   path: string; // the url
   icon: JSX.Element;
   name: string; // name that appear in Sidebar
   exact: boolean;
 }
-
+/**
+ * Pagination props interface.
+ */
 export interface PaginationProps {
   onPageChange: any;
   totalCount: number;
@@ -90,7 +109,9 @@ export interface PaginationProps {
   onPageSizeChange: any;
   otherHtml?: any;
 }
-
+/**
+ * Button props interface.
+ */
 export interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   className?: string;
@@ -101,7 +122,9 @@ export interface ButtonProps {
   children?: any;
 }
 
-
+/**
+ * Router props interface.
+ */
 export interface RouterProps {
   component?: any;
   path: string;
@@ -110,14 +133,18 @@ export interface RouterProps {
   url?: any;
 }
 
-
+/**
+ * Dropdown list format interface.
+ */
 export interface DropdownListFormat {
   label: string;
   value: any;
   sub?: Array<DropdownListFormat>;
   other?: any;
 }
-
+/**
+ * Page interface.
+ */
 export interface Page {
   pageUrl: string;
   id: number;
@@ -125,12 +152,17 @@ export interface Page {
   status: number;
   accessType: string;
 }
+/**
+ * Notification interface.
+ */
 export interface Notification {
   id: any;
   notificationType: string;
   isNotification: boolean;
 }
-
+/**
+ * Login data interface.
+ */
 export interface LoginData {
   userEmail: string;
   password: string;
