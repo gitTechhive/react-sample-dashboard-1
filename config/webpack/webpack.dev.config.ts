@@ -30,7 +30,7 @@ const devConfig: webpack.Configuration = merge(commonConfig, {
         static: paths.src,
         open: true,
         compress: true,
-        port: 4800,
+        port: 5200,
         https:false,
         // host: "local-ipv4",
       },
