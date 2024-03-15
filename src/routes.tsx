@@ -31,7 +31,7 @@ const privateRoutes: RouterProps[] = [
     caseSensitive: true,
     url: ENUMFORROUTES.DASHBOARD,
   },
-  
+
 
 ];
 /** Define public Routes */
@@ -47,12 +47,12 @@ const publicRoutes: RouterProps[] = [
     caseSensitive: true,
   },
   {
-    path: ENUMFORROUTES.SIGNUP,
+    path: ENUMFORROUTES.REGISTER,
     component: <Signup />,
     caseSensitive: true,
   },
   {
-    path: ENUMFORROUTES.FORGOTPASSWORD,
+    path: ENUMFORROUTES.FORGOT_PASSWORD,
     component: <ForgotPassword />,
     caseSensitive: true,
   },
@@ -71,11 +71,11 @@ const publicRoutes: RouterProps[] = [
  * @returns {JSX.Element} JSX element representing the AppRouter component
  */
 const AppRouter = (props): JSX.Element => {
-/** Check if the user is authenticated  */
+  /** Check if the user is authenticated  */
   const isAuthenticated = getToken() !== null ? true : false;
   /** State to manage private route list */
   const [privateRouteList, setPrivateRouteList] = useState<RouterProps[]>([]);
-//roles and Righs Start
+  //roles and Righs Start
   // useEffect(() => {
 
   //   if (isAuthenticated === false) {
@@ -90,10 +90,10 @@ const AppRouter = (props): JSX.Element => {
   //     return;
   //   }
 
-    // let token: any = localStorage.getItem("token");
+  // let token: any = localStorage.getItem("token");
 
-    //  const decode: any = jwtDecode(token);
-    //  console.log(decode,"decode value");
+  //  const decode: any = jwtDecode(token);
+  //  console.log(decode,"decode value");
   //   const decode: any =[ENUMFORROUTES.DASHBOARD,ENUMFORROUTES.REPORTS]
   //   const newPageData = [...decode];
 
@@ -123,14 +123,14 @@ const AppRouter = (props): JSX.Element => {
   //   let jsx: any = null;
 
   //   switch (url) {
-    
+
   //     case ENUMFORROUTES.DASHBOARD:
   //       jsx = <Dashboard accessType={accessType} />
   //       break;
   //     case ENUMFORROUTES.REPORTS:
   //       jsx = <Reports accessType={accessType} />
   //       break;
-    
+
 
   //     default:
   //       break;
@@ -236,7 +236,7 @@ const AppRouter = (props): JSX.Element => {
   //     </Router>
   //   </div>
   // )
- // role sight end
+  // role sight end
   return (
 
     <div className={isAuthenticated ? 'layout-wrapper' : ''} id={isAuthenticated ? "layout-wrapper" : ''}>
@@ -280,10 +280,10 @@ const AppRouter = (props): JSX.Element => {
 
 
               ))}
-             
-                <Route path="*" element={<NotFound />} />
 
-       
+              <Route path="*" element={<NotFound />} />
+
+
             </Routes>
           </React.Suspense>
         </div>

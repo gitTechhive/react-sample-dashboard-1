@@ -71,7 +71,7 @@ const Login = (props) => {
                                             </div>
                                             <div className="form-group forgot-password">
                                                 <a href='#' className=' btn-link btn-sm'>Forgot Password?</a>
-                                            </div>
+                                            </div>     
                                             <div className="auth-btn-group">
                                                 <Button variant="primary">Continue</Button>
                                                 <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>

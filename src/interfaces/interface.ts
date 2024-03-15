@@ -31,6 +31,8 @@ export const ENUMFORROUTES = {
   LOGIN: "/login",
   ACCESS_DENIED: "/access-denied",
   USER_MANGEMNET: "/user-mangemnet",
+  FORGOT_PASSWORD: "/forgot-password",
+  REGISTER: "/register",
 
 }
 
