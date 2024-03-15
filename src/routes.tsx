@@ -47,7 +47,7 @@ const publicRoutes: RouterProps[] = [
     caseSensitive: true,
   },
   {
-    path: ENUMFORROUTES.REGISTER,
+    path: ENUMFORROUTES.SIGN_UP,
     component: <Signup />,
     caseSensitive: true,
   },

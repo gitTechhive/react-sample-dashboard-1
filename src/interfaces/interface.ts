@@ -32,7 +32,7 @@ export const ENUMFORROUTES = {
   ACCESS_DENIED: "/access-denied",
   USER_MANGEMNET: "/user-mangemnet",
   FORGOT_PASSWORD: "/forgot-password",
-  REGISTER: "/register",
+  SIGN_UP: "/sign-up",
 
 }
 
@@ -44,6 +44,15 @@ export const ENUMFORROUTES = {
 export const ENUMFORACCOUNTTAB = {
   PERSONAL_DETAILS: "Personal Details",
   UPDATE_PASSWORD: "Update Password"
+
+} as const;
+
+/**
+ * Enum for Sign up step names.
+ */
+export const ENUMFORSIGNUPSTEP = {
+  USER_DETAILS: "User Details",
+  VERIFY_OTP: "Verify Otp"
 
 } as const;
 /**
@@ -170,3 +179,20 @@ export interface LoginData {
   password: string;
 
 }
+/**
+ * SignUpData interface.
+ */
+export interface SignUpData {
+  firstName: string;
+  lastName: string;
+  countryCode: string;
+  email: string;
+  mobileNo: string;
+  uuid?: string;
+  otp?: string;
+  requestId?: string;
+  hiddenCaptcha?: string;
+
+}
+
+

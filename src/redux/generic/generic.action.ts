@@ -13,6 +13,14 @@ import {
 
   DEFAULT_REDUX_SUCCESS,
   DEFAULT_REDUX_FAILURE,
+  GET_GENERATE_CAPTCHA_SUCCESS,
+  GET_GENERATE_CAPTCHA_FAILURE,
+  GET_REGENERATE_CAPTCHA_FAILURE,
+  GET_REGENERATE_CAPTCHA_SUCCESS,
+  GET_VERIFY_CAPTCHA_SUCCESS,
+  GET_VERIFY_CAPTCHA_FAILURE,
+  GET_COUNTRY_PREFIX_FAILURE,
+  GET_COUNTRY_PREFIX_SUCCESS,
 
 } from "./generic.type";
 import { RooteAction } from "../store";
@@ -127,7 +135,74 @@ export const getCountrySuccess = (obj: any): RooteAction => {
 export const getCountryFailure = (): RooteAction => {
   return { type: GET_COUNTRY_FAILURE, payload: {} };
 };
+/**
+ * Action creator for successful retrieval of countries Prefix.
+ * @param obj Country Prefix data.
+ * @returns Action object.
+ */
+export const getCountryPrefixSuccess = (obj: any): RooteAction => {
+  return { type: GET_COUNTRY_PREFIX_SUCCESS, payload: obj };
+};
 
+/**
+ * Action creator for failed retrieval of countries Prefix.
+ * @returns Action object.
+ */
+export const getCountryPrefixFailure = (): RooteAction => {
+  return { type: GET_COUNTRY_PREFIX_FAILURE, payload: {} };
+};
+
+
+/**
+ * Action creator for successful retrieval of captcha.
+ * @param obj Captcha data.
+ * @returns Action object with type GET_GENERATE_CAPTCHA_SUCCESS and payload obj.
+ */
+export const getGenerateCaptchaSuccess = (obj: any): RooteAction => {
+  return { type: GET_GENERATE_CAPTCHA_SUCCESS, payload: obj };
+};
+
+/**
+ * Action creator for failed retrieval of captcha.
+ * @returns Action object with type GET_GENERATE_CAPTCHA_FAILURE and empty payload.
+ */
+export const getGenerateCaptchaFailure = (): RooteAction => {
+  return { type: GET_GENERATE_CAPTCHA_FAILURE, payload: {} };
+};
+/**
+ * Action creator function for dispatching action indicating
+ * success in regenerating captcha.
+ * @param obj Object containing regenerated captcha data.
+ * @returns Action object with type GET_REGENERATE_CAPTCHA_SUCCESS and payload obj.
+ */
+export const getRegenerateCaptchaSuccess = (obj: any): RooteAction => {
+  return { type: GET_REGENERATE_CAPTCHA_SUCCESS, payload: obj };
+};
+
+/**
+ * Action creator function for dispatching action indicating
+ * failure in regenerating captcha.
+ * @returns Action object with type GET_REGENERATE_CAPTCHA_FAILURE and empty payload.
+ */
+export const getRegenerateCaptchaFailure = (): RooteAction => {
+  return { type: GET_REGENERATE_CAPTCHA_FAILURE, payload: {} };
+};
+/**
+ * Action creator for successful retrieval of captcha verification.
+ * @param obj Captcha data.
+ * @returns Action object with type GET_VERIFY_CAPTCHA_SUCCESS and payload obj.
+ */
+export const getVerifyCaptchaSuccess = (obj: any): RooteAction => {
+  return { type: GET_VERIFY_CAPTCHA_SUCCESS, payload: obj };
+};
+
+/**
+ * Action creator for failed retrieval of captcha verification.
+ * @returns Action object with type GET_VERIFY_CAPTCHA_FAILURE and empty payload.
+ */
+export const getVerifyCaptchaFailure = (): RooteAction => {
+  return { type: GET_VERIFY_CAPTCHA_FAILURE, payload: {} };
+};
 /**
  * Action creator for resetting generic data.
  * @returns Action object.

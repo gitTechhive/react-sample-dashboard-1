@@ -59,16 +59,42 @@ export const GET_COUNTRY_SUCCESS = "GET_COUNTRY_SUCCESS";
  * Action type for failed retrieval of countries.
  */
 export const GET_COUNTRY_FAILURE = "GET_COUNTRY_FAILURE";
+/**
+ * Action type for successful retrieval of countries prefix.
+ */
+export const GET_COUNTRY_PREFIX_SUCCESS = "GET_COUNTRY_PREFIX_SUCCESS";
 
 /**
- * Action type for successful removal of demand.
+ * Action type for failed retrieval of countries prefix.
  */
-export const REMOVE_DEMAND_SUCCESS = "REMOVE_DEMAND_SUCCESS";
+export const GET_COUNTRY_PREFIX_FAILURE = "GET_COUNTRY_PREFIX_FAILURE";
 
 /**
- * Action type for failed removal of demand.
+ * Action type for successful retrieval of Captcha.
  */
-export const REMOVE_DEMAND_FAILURE = "REMOVE_DEMAND_FAILURE";
+export const GET_GENERATE_CAPTCHA_SUCCESS = "GET_GENERATE_CAPTCHA_SUCCESS";
+
+/**
+ * Action type for failed retrieval of Captcha.
+ */
+export const GET_GENERATE_CAPTCHA_FAILURE = "GET_GENERATE_CAPTCHA_FAILURE";
+/**
+ * Action type for successful retrieval of Captcha.
+ */
+export const GET_REGENERATE_CAPTCHA_SUCCESS = "GET_REGENERATE_CAPTCHA_SUCCESS";
+
+/**
+ * Action type for failed retrieval of Captcha.
+ */
+export const GET_REGENERATE_CAPTCHA_FAILURE = "GET_REGENERATE_CAPTCHA_FAILURE";
+/**
+ * Action type for successful retrieval of Verify Captcha.
+ */
+export const GET_VERIFY_CAPTCHA_SUCCESS = "GET_VERIFY_CAPTCHA_SUCCESS";
+/**
+ * Action type for failed retrieval of Verify Captcha.
+ */
+export const GET_VERIFY_CAPTCHA_FAILURE = "GET_VERIFY_CAPTCHA_FAILURE";
 
 /**
  * Action type for successful default Redux action.

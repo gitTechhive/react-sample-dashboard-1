@@ -13,3 +13,15 @@ export const GET_CITY_DATA_API = "city";
 export const GET_STATE_DATA_API = "state";
 /**API endpoint for fetching country data  */
 export const GET_COUNTRY_DATA_API = "country";
+/**API endpoint for fetching country Prefix data  */
+export const GET_COUNTRY_PREFIX_DATA_API = "master/countryCodes";
+/**API endpoint for fetching Captcha data  */
+export const GET_GENERATE_CAPTCHA_DATA_API = "captcha/generate";
+/**API endpoint for fetching Captcha data  */
+export const GET_REGENERATE_CAPTCHA_DATA_API = "captcha/reGenerate";
+/**API endpoint for fetching Captcha Verification data  */
+export const GET_VERIFY_CAPTCHA_DATA_API = "captcha/verification";
+/**API endpoint for fetching Otp data  */
+export const SEND_OTP_DATA_API = "users/sendOtp";
+/**API endpoint for Sign up data  */
+export const SIGN_UP_DATA_API = "users/";

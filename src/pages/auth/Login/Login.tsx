@@ -8,6 +8,8 @@ import google from '../../../assets/imgaes/google.svg';
 import bg_shape from '../../../assets/imgaes/bg-shape.png';
 import { Button, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import AuthSidebar from '../../../components/AuthSidebar/AuthSidebar';
+import { useNavigate } from 'react-router';
+import { ENUMFORROUTES } from '../../../interfaces/interface';
 
 /**
  * Login Component
@@ -15,6 +17,18 @@ import AuthSidebar from '../../../components/AuthSidebar/AuthSidebar';
  * @returns {JSX.Element} JSX element representing the Login component
  */
 const Login = (props) => {
+    const navigate=useNavigate();
+    
+    const navigateToRelatedScreen = (route: any, val?: any) => {
+   
+       if (val) {
+           navigate(route, { state: val })
+       }
+       else {
+           navigate(route)
+       }
+     
+     }
     return (
         <>
             <div className="auth-wrapper">
@@ -77,7 +91,7 @@ const Login = (props) => {
                                                 <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>
                                             </div>
                                             <div className="sign-up-link">
-                                                <p className='text-center'>Don’t have an account? <a href="#">Sign up</a></p>
+                                            <p className='text-center' onClick={()=>{navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP)}} >Don’t have an account? Sign up</p>
                                             </div>
                                         </Form>
                                     </div>
@@ -98,7 +112,7 @@ const Login = (props) => {
                                                 <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>
                                             </div>
                                             <div className="sign-up-link">
-                                                <p className='text-center'>Don’t have an account? <a href="#">Sign up</a></p>
+                                            <p className='text-center' onClick={()=>{navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP)}} >Don’t have an account? Sign up</p>
                                             </div>
                                         </Form>
                                     </div>
