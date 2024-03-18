@@ -48,11 +48,29 @@ export const ENUMFORACCOUNTTAB = {
 } as const;
 
 /**
+ * Enum for Login tab names.
+ */
+export const ENUMFORLOGINTAB = {
+  EMAIL: "email",
+  MOBILE_NO: "mobile no",
+  VERIFY_OTP: "Verify Otp"
+
+} as const;
+/**
  * Enum for Sign up step names.
  */
 export const ENUMFORSIGNUPSTEP = {
   USER_DETAILS: "User Details",
   VERIFY_OTP: "Verify Otp"
+
+} as const;
+/**
+ * Enum for Sign/Login up Option names.
+ */
+export const ENUMFORSIGNUPORLOGINOPTION = {
+  GOOGLE: "google",
+  EMAIL: "email",
+  MOBILE_NO: "mobile no"
 
 } as const;
 /**
@@ -175,9 +193,15 @@ export interface Notification {
  * Login data interface.
  */
 export interface LoginData {
-  userEmail: string;
-  password: string;
-
+  email?: string;
+  password?: string;
+  type?: string;
+  googleId?: string;
+  uuid?: string;
+  phoneNo?: any;
+  otp?: any;
+  countryCode?: any;
+  hiddenCaptcha?: any;
 }
 /**
  * SignUpData interface.

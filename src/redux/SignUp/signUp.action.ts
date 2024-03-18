@@ -1,5 +1,5 @@
 import { RooteAction } from "../store";
-import { GET_SIGN_UP_FAILURE, GET_SIGN_UP_SUCCESS, SEND_OTP_FAILURE, SEND_OTP_SUCCESS } from "./signUp.type";
+import { GET_SIGN_UP_FAILURE, GET_SIGN_UP_SUCCESS, GET_SIGN_UP_WITH_GOOGLE_FAILURE, GET_SIGN_UP_WITH_GOOGLE_SUCCESS, SEND_OTP_FAILURE, SEND_OTP_SUCCESS } from "./signUp.type";
 
 /**
  * Action creator function to dispatch action when sign up is successful.
@@ -30,4 +30,22 @@ export const SendOtpSuccess = (obj): RooteAction => {
  */
 export const SendOtpFailure = (): RooteAction => {
     return { type: SEND_OTP_FAILURE, payload: {} };
+};
+
+
+
+/**
+ * Action creator function to dispatch action when sign up Google is successful.
+ * @param obj Object containing login data.
+ * @returns Action object with type and payload.
+ */
+export const getSignUpWithGoogleSuccess = (obj): RooteAction => {
+    return { type: GET_SIGN_UP_WITH_GOOGLE_SUCCESS, payload: obj };
+};
+/**
+ * Action creator function to dispatch action when sign up Google fails.
+ * @returns Action object with type and an empty payload.
+ */
+export const getSignUpWithGoogleFailure = (): RooteAction => {
+    return { type: GET_SIGN_UP_WITH_GOOGLE_FAILURE, payload: {} };
 };

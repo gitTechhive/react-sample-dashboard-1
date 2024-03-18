@@ -25,3 +25,7 @@ export const GET_VERIFY_CAPTCHA_DATA_API = "captcha/verification";
 export const SEND_OTP_DATA_API = "users/sendOtp";
 /**API endpoint for Sign up data  */
 export const SIGN_UP_DATA_API = "users/";
+/**API endpoint for Google Sign up data  */
+export const SIGN_UP_WITH_GOOGLE_DATA_API = "users/singUpGoogle";
+/**API endpoint for Google Sign up data  */
+export const GET_GOOGLE_USERS_DATA_API = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";

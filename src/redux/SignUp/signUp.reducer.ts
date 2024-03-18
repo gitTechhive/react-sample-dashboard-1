@@ -1,5 +1,5 @@
 import { RooteAction } from "../store";
-import {  GET_SIGN_UP_FAILURE, GET_SIGN_UP_SUCCESS, SEND_OTP_FAILURE, SEND_OTP_SUCCESS } from "./signUp.type";
+import { GET_SIGN_UP_FAILURE, GET_SIGN_UP_SUCCESS, GET_SIGN_UP_WITH_GOOGLE_FAILURE, GET_SIGN_UP_WITH_GOOGLE_SUCCESS, SEND_OTP_FAILURE, SEND_OTP_SUCCESS } from "./signUp.type";
 
 /**
  * Interface representing the initial state for sign up.
@@ -9,6 +9,8 @@ export interface SignUpInitializeState {
     signUpSuccess: boolean;
     /** Contains sign up related data */
     signUpData: any;
+    /** Contains Google sign up related data */
+    signUpWithGoogleData: any;
     /** Contains data related to OTP sending */
     sendOtpData: any;
     /** Indicates whether an asynchronous operation is in progress */
@@ -19,6 +21,7 @@ const initialState: SignUpInitializeState = {
     signUpSuccess: false,
     signUpData: [],
     sendOtpData: [],
+    signUpWithGoogleData: [],
     loading: false,
 };
 
@@ -48,6 +51,21 @@ function SignUpReducer(
                 signUpData: null,
                 loading: false,
             };
+        case GET_SIGN_UP_WITH_GOOGLE_SUCCESS:
+            return {
+                ...state,
+                signUpSuccess: true,
+                signUpWithGoogleData: action.payload,
+                loading: false,
+            };
+
+        case GET_SIGN_UP_WITH_GOOGLE_FAILURE:
+            return {
+                ...state,
+                signUpSuccess: false,
+                signUpWithGoogleData: null,
+                loading: false,
+            };
         case SEND_OTP_SUCCESS:
             return {
                 ...state,
@@ -62,8 +80,8 @@ function SignUpReducer(
                 signUpSuccess: false,
                 sendOtpData: null,
                 loading: false,
-            };     
-       
+            };
+
 
         default:
             return state;

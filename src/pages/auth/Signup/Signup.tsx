@@ -9,17 +9,20 @@ import google from '../../../assets/imgaes/google.svg';
 import bg_shape from '../../../assets/imgaes/bg-shape.png';
 import AuthSidebar from '../../../components/AuthSidebar/AuthSidebar';
 import { useNavigate } from 'react-router';
-import { DropdownListFormat, ENUMFORROUTES, ENUMFORSIGNUPSTEP, SignUpData } from '../../../interfaces/interface';
+import { DropdownListFormat, ENUMFORROUTES, ENUMFORSIGNUPORLOGINOPTION, ENUMFORSIGNUPSTEP, SignUpData } from '../../../interfaces/interface';
 import * as yup from 'yup';
-import { PATTERN_EMAIL } from '../../../Utility/Validation_Helper';
+import { ONLY_NUMBERS, PATTERN_EMAIL } from '../../../Utility/Validation_Helper';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, setToken } from '../../../Utility/Helper';
 import { getRegenerateCaptchaAPI } from '../../../redux/Service/generic';
-import { SignUpDataAPI } from '../../../redux/Service/signup';
+import { SignUpDataAPI, SignUpWithGoogleDataAPI } from '../../../redux/Service/signup';
 import { SendOtpDataAPI } from './../../../redux/Service/signup';
 import { getGenerateCaptchaAPI, getCountryPrefixAPI, getVerifyCaptchaAPI } from './../../../redux/Service/generic';
 import Select from "react-select";
 import OTPInput from 'react-otp-input';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { GET_GOOGLE_USERS_DATA_API } from '../../../Utility/ApiList';
 const Signup = (props) => {
     /**Hook from React Router for navigation  */
     const navigate = useNavigate();
@@ -45,7 +48,13 @@ const Signup = (props) => {
  * Represents the current step in the sign-up process.
  */
     const [signUpStep, setSignUpStep] = useState<String>(ENUMFORSIGNUPSTEP.USER_DETAILS);
+    /**
+    * State variable to store the URL of the captcha image.
+    */
     const [captchaImgUrl, setCaptchaImgUrl] = useState<any>("");
+    /**
+     * State variable to store the data for the country code dropdown.
+    */
     const [countryCodeDropDownData, setCountyCodeDropDownData] = useState<Array<DropdownListFormat>>([]);
     /**
      * Function to change the sign-up step.
@@ -55,19 +64,21 @@ const Signup = (props) => {
         if (!(step === signUpStep)) {
             setSignUpStep(step);
             userDetailsFormData.setFieldValue("otp", "");
-            if(signUpStep===ENUMFORSIGNUPSTEP.VERIFY_OTP){
+            if (signUpStep === ENUMFORSIGNUPSTEP.VERIFY_OTP) {
                 handleRegenerateCaptcha();
             }
-      
+
         }
 
     }
-
+    /**
+     * Initial user details object used for sign up.
+     */
     const initUserDetails: SignUpData = {
-        firstName: "akshit",
-        lastName: "techhive",
-        email: "akshit@techhive.co.in",
-        mobileNo: "9974841293",
+        firstName: "",
+        lastName: "",
+        email: "",
+        mobileNo: "",
         countryCode: "",
         uuid: "",
         otp: "",
@@ -75,21 +86,17 @@ const Signup = (props) => {
         hiddenCaptcha: "",
     }
 
-    // {
-    //     firstName: "",
-    //     lastName: "",
-    //     email: "",
-    //     mobileNo: "",
-    //     countryCode: "",
-    //     uuid: "",
-    //     otp: "",
-    //     requestId: "",
-    //     hiddenCaptcha: "",
-    // }
+    /**
+ * Function to handle form submission for user details.
+ * @param values User details form values.
+ */
     const onSubmitUserDetails = (values) => {
         // console.log(values);
 
     }
+    /**
+ * Function to handle user details form submission.
+ */
     const handleUserDetailsSubmit = async () => {
         userDetailsFormData.handleSubmit();
         const userDetailsErrors = await userDetailsFormData.validateForm();
@@ -113,15 +120,17 @@ const Signup = (props) => {
         }
 
     }
+    /**
+ * Validation schema for user details form.
+ */
     const validationUserDetails = yup.object({
         firstName: yup.string().required("First Name is required !!"),
         lastName: yup.string().required("Last Name is required !!"),
         email: yup.string().trim().matches(PATTERN_EMAIL, "Please Enter a valid Email.").required("Email is required !!"),
-        mobileNo: yup.string()
-            .trim()
+        mobileNo: yup.string().trim().matches(ONLY_NUMBERS,"Please Enter Only Numerics Values!!")            
             .min(7, "Please Enter a valid Mobile No.").required("Mobile No Required!!"),
         countryCode: yup.string().required("Country Code is required !!"),
-        // hiddenCaptcha: yup.string().required("Captcha is required !!")
+        hiddenCaptcha: yup.string().required("Captcha is required !!")
 
     })
     const userDetailsFormData = useFormik({
@@ -130,7 +139,10 @@ const Signup = (props) => {
         validationSchema: validationUserDetails,
     })
 
-    console.log(userDetailsFormData.values.otp, "otp");
+    /**
+     * Effect hook to handle actions on component mount.
+     * - Calls functions to generate captcha and fetch country prefixes.
+     */
     useEffect(() => {
 
         handleGenerateCaptcha();
@@ -139,14 +151,18 @@ const Signup = (props) => {
 
         }
     }, [])
-
+    /**
+     * Effect hook to handle actions on component mount.
+     * - Calls functions to generate captcha and fetch country prefixes.
+     */
     useEffect(() => {
 
         setCountyCodeDropDownData(!isEmptyObjectOrNullUndefiend(props.countryPrefixData) ? props.countryPrefixData : []);
-        // console.log(props.countryPrefixData, "country Code");
     }, [props.countryPrefixData])
 
-
+    /**
+     * Function to generate captcha image and set UUID in user details form data.
+     */
     const handleGenerateCaptcha = async () => {
         const response = await props.getGenerateCaptchaAPI();
 
@@ -155,6 +171,9 @@ const Signup = (props) => {
             userDetailsFormData.setFieldValue("uuid", !isNullUndefinedOrBlank(response?.payload?.uuid) ? response?.payload?.uuid : "");
         }
     }
+    /**
+ * Function to regenerate captcha image and update UUID in user details form data.
+ */
     const handleRegenerateCaptcha = async () => {
         const reqBody = { uuId: userDetailsFormData.values.uuid }
         const response = await props.getRegenerateCaptchaAPI(reqBody);
@@ -165,8 +184,12 @@ const Signup = (props) => {
             userDetailsFormData.setFieldValue("hiddenCaptcha", "");
         }
     }
-
-    const handleVerifyCaptcha = async (req) => {
+    /**
+     * Function to verify captcha.
+     * @param req Object containing UUID and captcha.
+     * @returns Boolean indicating whether captcha verification was successful.
+     */
+    const handleVerifyCaptcha = async (req: any) => {
         const newData: SignUpData = { ...req };
         const reqBody = {
             uuId: newData.uuid,
@@ -179,6 +202,11 @@ const Signup = (props) => {
             return true;
         }
     }
+    /**
+ * Function to send OTP after verifying and removing unnecessary fields from the request data.
+ * @param req Object containing user details.
+ * @returns Boolean indicating whether OTP sending was successful.
+ */
     const handleSendOtp = async (req) => {
         const newData: SignUpData = { ...req };
         // delete newData.uuid;
@@ -192,7 +220,9 @@ const Signup = (props) => {
         }
     }
 
-
+    /**
+ * Function to verify user details form submission and handle submission process.
+ */
     const handleVerifyAndSubmitDetails = async () => {
         userDetailsFormData.handleSubmit();
         const userDetailsErrors = await userDetailsFormData.validateForm();
@@ -213,17 +243,51 @@ const Signup = (props) => {
 
             }
 
-            // {
-            //     "id": 28,
-            //     "firstName": "akshit",
-            //     "lastName": "techhive",
-            //     "email": "akshit@techhive.co.in",
-            //     "mobileNo": 9974841293,
-            //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOCIsImlhdCI6MTcxMDczNjE1NiwiZXhwIjoxNzEyMDMyMTU2fQ.j7nNE5lnSMLuIdbBvxDDWu0MhBWbFyLX3r7bevv4zzE"
-            // }
-
         }
-        console.log(response, "response");
+    }
+
+    /**
+ * Function to handle Google sign-up process.
+ */
+    const handleGoogleSignUp = useGoogleLogin({
+        onSuccess: (credentialResponse) => {
+
+            if (!isNullUndefinedOrBlank(credentialResponse.access_token)) {
+                handleGoogleWithSignupData(credentialResponse.access_token);
+            }
+
+        },
+        onError: (error) => console.log('Login Failed:', error)
+    })
+
+    const handleGoogleWithSignupData = async (access_token) => {
+        axios
+            .get(`${GET_GOOGLE_USERS_DATA_API}${access_token}`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then(async (res) => {
+                if (!isEmptyObjectOrNullUndefiend(res?.data)) {
+                    const reqBody = {
+                        firstName: res?.data?.given_name,
+                        lastName: res?.data?.family_name,
+                        email: res?.data?.email,
+                        googleId: res?.data?.id,
+                        type: ENUMFORSIGNUPORLOGINOPTION.GOOGLE,
+
+                    }
+                    const response = await props.SignUpWithGoogleDataAPI(reqBody);
+                    if (response) {
+                        if (!isNullUndefinedOrBlank(response.payload.token)) {
+                            navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
+                            setToken(response?.payload?.token);
+                        }
+                    }
+                }
+            })
+            .catch((err) => console.log(err));
     }
     return (
         <>
@@ -344,7 +408,7 @@ const Signup = (props) => {
                                         <button type="button" className=' btn-link btn-sm' onClick={() => { handleRegenerateCaptcha(); }}>Regenerate</button>
                                         <div className="auth-btn-group">
                                             <Button variant="primary" onClick={() => { handleUserDetailsSubmit() }}>Continue</Button>
-                                            <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>
+                                            <Button variant="outline-secondary" className='btn-icon-start' onClick={() => { handleGoogleSignUp(); }}> <img src={google} alt="" /> Google</Button>
                                         </div>
                                         <div className="sign-up-link">
                                             <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.LOGIN) }}>Already have an account?Sign In</p>
@@ -369,30 +433,30 @@ const Signup = (props) => {
 
                                     <div className="form-group">
                                         {/* <div className="otp-wrapper"> */}
-                                            <OTPInput
-                                                value={userDetailsFormData.values.otp}
-                                                onChange={(value) => { userDetailsFormData.setFieldValue("otp", value) }}
+                                        <OTPInput
+                                            value={userDetailsFormData.values.otp}
+                                            onChange={(value) => { userDetailsFormData.setFieldValue("otp", value) }}
 
-                                                renderInput={(props) => <input {...props} />}
-                                                inputType="number"
+                                            renderInput={(props) => <input {...props} />}
+                                            inputType="number"
 
-                                                // autoFocus={true}  
-                                                numInputs={6}
-                                                renderSeparator={<span>-</span>}
+                                            // autoFocus={true}  
+                                            numInputs={6}
+                                            renderSeparator={<span>-</span>}
 
-                                            />
+                                        />
 
-                                            {/* <div className='forms-otp'>
+                                        {/* <div className='forms-otp'>
                           <p>Resend a new code in : <span>{timer}</span></p>
                           <Button variant='link' onClick={() => { handleReSendOtp() }}>Resend OTP</Button>
                         </div> */}
 
-                                            <div className="auth-btn-group">
-                                                <Button variant="primary" disabled={userDetailsFormData.values.otp?.length !== 6} onClick={() => { handleVerifyAndSubmitDetails(); }}>Verify</Button>
-                                            </div>
-                                            <div className="sign-up-link">
-                                                <p className='text-center' onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS) }}>Back to Sign Up</p>
-                                            </div>
+                                        <div className="auth-btn-group">
+                                            <Button variant="primary" disabled={userDetailsFormData.values.otp?.length !== 6} onClick={() => { handleVerifyAndSubmitDetails(); }}>Verify</Button>
+                                        </div>
+                                        <div className="sign-up-link">
+                                            <p className='text-center' onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS) }}>Back to Sign Up</p>
+                                        </div>
                                         {/* </div> */}
                                     </div>
                                     {/* <p>Continue with email address</p> */}
@@ -443,7 +507,8 @@ const mapDispatchToProps = {
     SignUpDataAPI,
     SendOtpDataAPI,
     getCountryPrefixAPI,
-    getVerifyCaptchaAPI
+    getVerifyCaptchaAPI,
+    SignUpWithGoogleDataAPI
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
 
