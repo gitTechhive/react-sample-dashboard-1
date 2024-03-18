@@ -76,3 +76,7 @@ export const SignUpDataAPI =
                 dispatch(loading(false));
             }
         };
+
+
+
+   

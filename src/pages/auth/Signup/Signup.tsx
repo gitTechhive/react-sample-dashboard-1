@@ -13,7 +13,7 @@ import { DropdownListFormat, ENUMFORROUTES, ENUMFORSIGNUPSTEP, SignUpData } from
 import * as yup from 'yup';
 import { PATTERN_EMAIL } from '../../../Utility/Validation_Helper';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
-import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError } from '../../../Utility/Helper';
+import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, setToken } from '../../../Utility/Helper';
 import { getRegenerateCaptchaAPI } from '../../../redux/Service/generic';
 import { SignUpDataAPI } from '../../../redux/Service/signup';
 import { SendOtpDataAPI } from './../../../redux/Service/signup';
@@ -44,7 +44,7 @@ const Signup = (props) => {
     /**
  * Represents the current step in the sign-up process.
  */
-    const [signUpStep, setSignUpStep] = useState<String>(ENUMFORSIGNUPSTEP.VERIFY_OTP);
+    const [signUpStep, setSignUpStep] = useState<String>(ENUMFORSIGNUPSTEP.USER_DETAILS);
     const [captchaImgUrl, setCaptchaImgUrl] = useState<any>("");
     const [countryCodeDropDownData, setCountyCodeDropDownData] = useState<Array<DropdownListFormat>>([]);
     /**
@@ -55,22 +55,37 @@ const Signup = (props) => {
         if (!(step === signUpStep)) {
             setSignUpStep(step);
             userDetailsFormData.setFieldValue("otp", "");
-            userDetailsFormData.setFieldValue("hiddenCaptcha", "");
+            if(signUpStep===ENUMFORSIGNUPSTEP.VERIFY_OTP){
+                handleRegenerateCaptcha();
+            }
+      
         }
 
     }
 
     const initUserDetails: SignUpData = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        mobileNo: "",
+        firstName: "akshit",
+        lastName: "techhive",
+        email: "akshit@techhive.co.in",
+        mobileNo: "9974841293",
         countryCode: "",
         uuid: "",
         otp: "",
         requestId: "",
         hiddenCaptcha: "",
     }
+
+    // {
+    //     firstName: "",
+    //     lastName: "",
+    //     email: "",
+    //     mobileNo: "",
+    //     countryCode: "",
+    //     uuid: "",
+    //     otp: "",
+    //     requestId: "",
+    //     hiddenCaptcha: "",
+    // }
     const onSubmitUserDetails = (values) => {
         // console.log(values);
 
@@ -106,7 +121,7 @@ const Signup = (props) => {
             .trim()
             .min(7, "Please Enter a valid Mobile No.").required("Mobile No Required!!"),
         countryCode: yup.string().required("Country Code is required !!"),
-        hiddenCaptcha: yup.string().required("Captcha is required !!")
+        // hiddenCaptcha: yup.string().required("Captcha is required !!")
 
     })
     const userDetailsFormData = useFormik({
@@ -147,6 +162,7 @@ const Signup = (props) => {
         if (response) {
             setCaptchaImgUrl(!isNullUndefinedOrBlank(response?.payload?.realCaptcha) ? response?.payload?.realCaptcha : "");
             userDetailsFormData.setFieldValue("uuid", !isNullUndefinedOrBlank(response?.payload?.uuid) ? response?.payload?.uuid : "");
+            userDetailsFormData.setFieldValue("hiddenCaptcha", "");
         }
     }
 
@@ -171,6 +187,7 @@ const Signup = (props) => {
 
         const response = await props.SendOtpDataAPI(newData);
         if (response) {
+            userDetailsFormData.setFieldValue("requestId", !isNullUndefinedOrBlank(response?.payload?.requestId) ? response?.payload?.requestId : "");
             return true;
         }
     }
@@ -184,12 +201,29 @@ const Signup = (props) => {
                 setNestedObjectValues<
                     FormikTouched<FormikValues>
                 >(userDetailsErrors, true));
-
+            console.log(userDetailsErrors, "errors");
             return;
         }
         const reqBody = { ...userDetailsFormData.values }
-        const reponse = await props.SignUpDataAPI(reqBody);
-        console.log(reponse, "response");
+        const response = await props.SignUpDataAPI(reqBody);
+        if (response) {
+            if (!isNullUndefinedOrBlank(response.payload.token)) {
+                navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
+                setToken(response?.payload?.token);
+
+            }
+
+            // {
+            //     "id": 28,
+            //     "firstName": "akshit",
+            //     "lastName": "techhive",
+            //     "email": "akshit@techhive.co.in",
+            //     "mobileNo": 9974841293,
+            //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOCIsImlhdCI6MTcxMDczNjE1NiwiZXhwIjoxNzEyMDMyMTU2fQ.j7nNE5lnSMLuIdbBvxDDWu0MhBWbFyLX3r7bevv4zzE"
+            // }
+
+        }
+        console.log(response, "response");
     }
     return (
         <>
@@ -334,7 +368,7 @@ const Signup = (props) => {
                                 <div className="auth-form otp-form">
 
                                     <div className="form-group">
-                                        <div className="otp-wrapper">
+                                        {/* <div className="otp-wrapper"> */}
                                             <OTPInput
                                                 value={userDetailsFormData.values.otp}
                                                 onChange={(value) => { userDetailsFormData.setFieldValue("otp", value) }}
@@ -354,12 +388,12 @@ const Signup = (props) => {
                         </div> */}
 
                                             <div className="auth-btn-group">
-                                                <Button variant="primary" onClick={() => { handleVerifyAndSubmitDetails(); }}>Verify</Button>
+                                                <Button variant="primary" disabled={userDetailsFormData.values.otp?.length !== 6} onClick={() => { handleVerifyAndSubmitDetails(); }}>Verify</Button>
                                             </div>
                                             <div className="sign-up-link">
                                                 <p className='text-center' onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS) }}>Back to Sign Up</p>
                                             </div>
-                                        </div>
+                                        {/* </div> */}
                                     </div>
                                     {/* <p>Continue with email address</p> */}
                                     {/* <Form>

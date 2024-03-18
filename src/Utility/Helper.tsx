@@ -79,6 +79,10 @@ export const decrypted = (obj) => {
 
 
 // get token of loggedIn user
+export const setToken = (val): any => {
+  return  localStorage.setItem("token", val);
+};
+// get token of loggedIn user
 /** Function to get the token of the logged-in user from local storage. */
 export const getToken = (): returnTypeForString => {
   return localStorage.getItem("token");
