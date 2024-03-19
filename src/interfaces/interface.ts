@@ -57,6 +57,16 @@ export const ENUMFORLOGINTAB = {
 
 } as const;
 /**
+ * Enum for Login tab names.
+ */
+export const ENUMFORFORGOTPASSWORDSTEP = {
+  EMAIL: "email",
+  VERIFY_OTP: "verify otp",
+  CHANGE_PASSWORD:"change Password",
+  CHANGED_COMPLETED:"changed completed"
+
+} as const;
+/**
  * Enum for Sign up step names.
  */
 export const ENUMFORSIGNUPSTEP = {
@@ -216,6 +226,16 @@ export interface SignUpData {
   otp?: string;
   requestId?: string;
   hiddenCaptcha?: string;
+
+}
+/**
+ * SignUpData interface.
+ */
+export interface ForgotPasswordData {
+ email:string;
+ otp:string;
+ password:string;
+ confirmPassword:string;
 
 }
 

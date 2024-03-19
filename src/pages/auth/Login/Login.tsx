@@ -398,8 +398,8 @@ const Login = (props) => {
                                                             : null}
                                                     </Form.Group>
 
-                                                    <div className="form-group forgot-password">
-                                                        <a href='#' className=' btn-link btn-sm'>Forgot Password?</a>
+                                                    <div className="form-group forgot-password" onClick={()=>{navigateToRelatedScreen(ENUMFORROUTES.FORGOT_PASSWORD)}}>
+                                                        <a  className=' btn-link btn-sm'>Forgot Password?</a>
                                                     </div>
 
                                                 </Form>
