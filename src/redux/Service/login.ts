@@ -5,6 +5,8 @@ import { te, ts } from "../../Utility/Toaster";
 import {
   getLoginFailure,
   getLoginSuccess,
+  getLoginWithMobileNoFailure,
+  getLoginWithMobileNoSuccess,
   getLogoutFailure,
   getLogoutSuccess,
   resetState,
@@ -12,24 +14,22 @@ import {
 } from "../Login/login.action";
 // import { LOGIN_API } from "../../Utility/ApiList";
 import { post } from "../../Utility/httpInterceptor";
-import { GET_LOGIN_DATA_API } from "../../Utility/ApiList";
+import { GET_LOGIN_DATA_API, GET_LOGIN_WITH_MOBILE_NO_DATA_API } from "../../Utility/ApiList";
 
 
 /**
  * Login
  * @param {*} objBody
  * @method loginToSystem
- * @url /login/verify
+ * @url /login
  * @returns API will return login token and redirect to dashboard
  */
 export const loginToSystem =
   (objBody: any = undefined) =>
     async (dispatch: AppDispatch) => {
-      console.log(objBody, "calling")
       dispatch(loading(true));
       try {
         const response: any = await post(GET_LOGIN_DATA_API, objBody)
-        console.log(response, "response")
         if (response.data) {
           const user: any = response.data.data;
           ts(response.data.message);
@@ -55,6 +55,48 @@ export const loginToSystem =
         dispatch(loading(false));
       }
     };
+
+
+
+    
+/**
+ * Login
+ * @param {*} objBody
+ * @method loginWithMobileNoToSystem
+ * @url /login/verify
+ * @returns API will return login token and redirect to dashboard
+ */
+export const loginWithMobileNoToSystem =
+(objBody: any = undefined) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(loading(true));
+    try {
+      const response: any = await post(GET_LOGIN_WITH_MOBILE_NO_DATA_API, objBody)
+      if (response.data) {
+        const user: any = response.data.data;
+        ts(response.data.message);
+
+        // localStorage.setItem("email", objBody.email);
+      //   localStorage.setItem("email", user.email);
+      //   localStorage.setItem("token", user.token);
+      //   localStorage.setItem("name", user.first_name + ' ' + user.last_name );
+      //   localStorage.setItem("mobile_no", user.mobile_no);
+      //   localStorage.setItem("userId", user.userId);
+      //   localStorage.setItem("profile_Url", user.profile_pic_url);
+        return dispatch(getLoginWithMobileNoSuccess( response.data.data));
+
+      } else {
+
+        te('Login Failed!');
+        dispatch(getLoginWithMobileNoFailure());
+      }
+    } catch (err) {
+      console.log(err, "error")
+      dispatch(getLoginWithMobileNoFailure());
+    } finally {
+      dispatch(loading(false));
+    }
+  };
 
 // /**
 //  * Logout

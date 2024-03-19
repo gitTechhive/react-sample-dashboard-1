@@ -11,8 +11,7 @@ export interface SignUpInitializeState {
     signUpData: any;
     /** Contains Google sign up related data */
     signUpWithGoogleData: any;
-    /** Contains data related to OTP sending */
-    sendOtpData: any;
+   
     /** Indicates whether an asynchronous operation is in progress */
     loading: boolean;
 }
@@ -20,7 +19,6 @@ export interface SignUpInitializeState {
 const initialState: SignUpInitializeState = {
     signUpSuccess: false,
     signUpData: [],
-    sendOtpData: [],
     signUpWithGoogleData: [],
     loading: false,
 };
@@ -66,22 +64,6 @@ function SignUpReducer(
                 signUpWithGoogleData: null,
                 loading: false,
             };
-        case SEND_OTP_SUCCESS:
-            return {
-                ...state,
-                signUpSuccess: true,
-                sendOtpData: action.payload,
-                loading: false,
-            };
-
-        case SEND_OTP_FAILURE:
-            return {
-                ...state,
-                signUpSuccess: false,
-                sendOtpData: null,
-                loading: false,
-            };
-
 
         default:
             return state;

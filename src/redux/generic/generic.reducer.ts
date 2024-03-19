@@ -1,5 +1,5 @@
 import { RooteAction } from "../store";
-import { GET_STATES_SUCCESS, GET_STATES_FAILURE, GET_COUNTRY_SUCCESS, GET_COUNTRY_FAILURE, DEFAULT_REDUX_SUCCESS, DEFAULT_REDUX_FAILURE, GET_COUNTRY_PREFIX_FAILURE, GET_COUNTRY_PREFIX_SUCCESS, GET_GENERATE_CAPTCHA_FAILURE, GET_GENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_SUCCESS } from './generic.type';
+import { GET_STATES_SUCCESS, GET_STATES_FAILURE, GET_COUNTRY_SUCCESS, GET_COUNTRY_FAILURE, DEFAULT_REDUX_SUCCESS, DEFAULT_REDUX_FAILURE, GET_COUNTRY_PREFIX_FAILURE, GET_COUNTRY_PREFIX_SUCCESS, GET_GENERATE_CAPTCHA_FAILURE, GET_GENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_SUCCESS, SEND_OTP_SUCCESS, SEND_OTP_FAILURE } from './generic.type';
 import {
   GET_DATA_FOR_DROPDOWN_SUCCESS,
   GET_DATA_FOR_DROPDOWN_FAILURE,
@@ -34,6 +34,8 @@ export interface GenericInitialState {
   regenerateCaptchData: any;
   /** Data for verify captcha Data . */
   verifyCaptchData: any;
+   /** Contains data related to OTP sending */
+   sendOtpData: any;
   /** Flag indicating websocket connection status. */
   webSocketFlag: boolean;
   /** Flag indicating default Redux action status. */
@@ -53,6 +55,7 @@ const initialState: GenericInitialState = {
   generateCaptchData: null,
   regenerateCaptchData: null,
   verifyCaptchData: null,
+  sendOtpData:null,
   webSocketFlag: false,
   defaultRedux: true,
   loading: false,
@@ -109,6 +112,21 @@ const genericReducer = (
         loading: false,
       };
 
+      case SEND_OTP_SUCCESS:
+        return {
+            ...state,
+         
+            sendOtpData: action.payload,
+            loading: false,
+        };
+
+    case SEND_OTP_FAILURE:
+        return {
+            ...state,
+      
+            sendOtpData: null,
+            loading: false,
+        };
 
     case GET_GENERATE_CAPTCHA_SUCCESS:
       return {

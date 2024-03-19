@@ -95,6 +95,10 @@ export const GET_VERIFY_CAPTCHA_SUCCESS = "GET_VERIFY_CAPTCHA_SUCCESS";
  * Action type for failed retrieval of Verify Captcha.
  */
 export const GET_VERIFY_CAPTCHA_FAILURE = "GET_VERIFY_CAPTCHA_FAILURE";
+/**  Action type for successful Send Otp */
+export const SEND_OTP_SUCCESS = "SEND_OTP_SUCCESS";
+/** Action type for failed Send Otp */
+export const SEND_OTP_FAILURE = "SEND_OTP_FAILURE";
 
 /**
  * Action type for successful default Redux action.

@@ -7,6 +7,8 @@
 export const GET_REGISTER_DATA_API = "api/account/create";
 /** API endpoint for user login */
 export const GET_LOGIN_DATA_API = "login";
+/** API endpoint for user login */
+export const GET_LOGIN_WITH_MOBILE_NO_DATA_API = "loginPhoneNo";
 /** API endpoint for fetching city data  */
 export const GET_CITY_DATA_API = "city";
 /** API endpoint for fetching state data */
@@ -21,8 +23,10 @@ export const GET_GENERATE_CAPTCHA_DATA_API = "captcha/generate";
 export const GET_REGENERATE_CAPTCHA_DATA_API = "captcha/reGenerate";
 /**API endpoint for fetching Captcha Verification data  */
 export const GET_VERIFY_CAPTCHA_DATA_API = "captcha/verification";
-/**API endpoint for fetching Otp data  */
-export const SEND_OTP_DATA_API = "users/sendOtp";
+/** API endpoint for sending OTP to email. */
+export const SEND_OTP_EMAIL_DATA_API = "users/sendOtp";
+/** API endpoint for sending OTP to mobile number. */
+export const SEND_OTP_TO_MOBILE_NO_DATA_API = "sendOtpLoginPhoneNo";
 /**API endpoint for Sign up data  */
 export const SIGN_UP_DATA_API = "users/";
 /**API endpoint for Google Sign up data  */

@@ -9,22 +9,33 @@ import bg_shape from '../../../assets/imgaes/bg-shape.png';
 import { Button, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import AuthSidebar from '../../../components/AuthSidebar/AuthSidebar';
 import { useNavigate } from 'react-router';
-import { DropdownListFormat, ENUMFORLOGINTAB, ENUMFORROUTES, LoginData } from '../../../interfaces/interface';
-import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError } from '../../../Utility/Helper';
-import { getCountryPrefixAPI, getGenerateCaptchaAPI, getRegenerateCaptchaAPI, getVerifyCaptchaAPI } from '../../../redux/Service/generic';
+import { DropdownListFormat, ENUMFORLOGINTAB, ENUMFORROUTES, ENUMFORSIGNUPORLOGINOPTION, LoginData } from '../../../interfaces/interface';
+import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, setToken } from '../../../Utility/Helper';
+import { SendOtpDataAPI, getCountryPrefixAPI, getGenerateCaptchaAPI, getRegenerateCaptchaAPI, getVerifyCaptchaAPI } from '../../../redux/Service/generic';
 import * as yup from 'yup';
 import { ONLY_NUMBERS, PATTERN_EMAIL, PATTERN_FOR_PASSWORD } from '../../../Utility/Validation_Helper';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import Select from "react-select";
-import { loginToSystem } from './../../../redux/Service/login';
+import { loginToSystem, loginWithMobileNoToSystem } from './../../../redux/Service/login';
+import { GET_GOOGLE_USERS_DATA_API, SEND_OTP_TO_MOBILE_NO_DATA_API } from '../../../Utility/ApiList';
+import OTPInput from 'react-otp-input';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 /**
  * Login Component
  * @param {object} props - Props passed to the component
  * @returns {JSX.Element} JSX element representing the Login component
  */
 const Login = (props) => {
+    /**
+ * Retrieves the navigation function from the React Router.
+ */
     const navigate = useNavigate();
-
+    /**
+     * Navigates to a related screen based on the provided route and optional state.
+     * @param route The route to navigate to.
+     * @param val Optional state to pass along with the navigation.
+     */
     const navigateToRelatedScreen = (route: any, val?: any) => {
 
         if (val) {
@@ -35,9 +46,21 @@ const Login = (props) => {
         }
 
     }
-
+    /**
+     * State variable to store the currently selected tab in the login form.
+     * Initialized with the value of `ENUMFORLOGINTAB.EMAIL` to set the email tab as the default selected tab.
+     */
     const [selectedTab, setSelctedTab] = useState<any>(ENUMFORLOGINTAB.EMAIL);
+    /**
+ * State variable to toggle the visibility of the password input field.
+ * Initialized as `false` to initially hide the password (show password as masked).
+ */
     const [eyeToggle, setEyeToggle] = useState<boolean>(false);
+    /**
+ * State variable to control the visibility of the mobile OTP verification tab.
+ * Initialized as `false` to hide the mobile OTP verification tab by default.
+ */
+    const [isMobileOtpVerifyTab, setIsMobileOtpVerifyTab] = useState<boolean>(false);
 
     /**
  * State variable to store the data for the country code dropdown.
@@ -75,7 +98,7 @@ const Login = (props) => {
  * Function to regenerate captcha image and update UUID in user details form data.
  */
     const handleRegenerateCaptcha = async () => {
-        const reqBody = { uuId: "" }
+        const reqBody = { uuId: loginFormData.values.uuid }
         const response = await props.getRegenerateCaptchaAPI(reqBody);
 
         if (response) {
@@ -103,6 +126,23 @@ const Login = (props) => {
         }
     }
     /**
+* Function to send OTP after verifying and removing unnecessary fields from the request data.
+* @param req Object containing user details.
+* @returns Boolean indicating whether OTP sending was successful.
+*/
+    const handleSendOtp = async (req) => {
+        const newData: LoginData = { ...req };
+        // delete newData.uuid;
+        delete newData.hiddenCaptcha;
+        customJsonInclude(newData);
+
+        const response = await props.SendOtpDataAPI(SEND_OTP_TO_MOBILE_NO_DATA_API, newData);
+        if (response) {
+
+            return true;
+        }
+    }
+    /**
  * Effect hook to handle actions on component mount.
  * - Calls functions to generate captcha and fetch country prefixes.
  */
@@ -111,6 +151,9 @@ const Login = (props) => {
         setCountyCodeDropDownData(!isEmptyObjectOrNullUndefiend(props.countryPrefixData) ? props.countryPrefixData : []);
     }, [props.countryPrefixData])
 
+    /**
+ * Initial values for the login form fields.
+ */
     const initLoginValues: LoginData = {
         email: "",
         countryCode: "",
@@ -121,9 +164,10 @@ const Login = (props) => {
         hiddenCaptcha: "",
 
     }
+    /**
+ * Validation schema for login data based on the selected tab.
+ */
     const validationSchemaForLoginData = yup.object({
-
-
         email: yup.string().when(
             () => {
                 return selectedTab === ENUMFORLOGINTAB.EMAIL ? yup.string().trim().matches(PATTERN_EMAIL, "Please Enter a valid Email.").required("Email is required !!") : yup.string()
@@ -144,16 +188,26 @@ const Login = (props) => {
         hiddenCaptcha: yup.string().required("Captcha is required !!")
 
     })
-
+    /**
+     * Function to handle form submission for login.
+     */
     const onSubmitForLogin = () => {
         // console.log(vallues)
 
     }
+    /**
+ * Formik hook for managing login form data.
+ */
     const loginFormData = useFormik({
         initialValues: initLoginValues,
         validationSchema: validationSchemaForLoginData,
         onSubmit: onSubmitForLogin,
     })
+
+    /**
+ * Function to handle submission of login data.
+ * Validates the form data, verifies captcha, and performs login or OTP verification based on the selected tab.
+ */
     const handleSubmitLoginData = async () => {
         loginFormData.handleSubmit();
         const loginFormErrors = await loginFormData.validateForm();
@@ -173,14 +227,61 @@ const Login = (props) => {
         }
         const updateBody: LoginData = { ...reqBody, type: selectedTab };
         customJsonInclude(updateBody);
-        const loginDataResponse = await props.loginToSystem(updateBody);
-        if (loginDataResponse) {
-            console.log(loginDataResponse, "loginData Response");
+        if (selectedTab === ENUMFORLOGINTAB.EMAIL) {
+            const loginDataResponse = await props.loginToSystem(updateBody);
+            if (loginDataResponse) {
+                if (!isNullUndefinedOrBlank(loginDataResponse.payload.token)) {
+                    navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
+                    setToken(loginDataResponse?.payload?.token);
+
+                }
+
+            }
+        }
+        if (selectedTab === ENUMFORLOGINTAB.MOBILE_NO) {
+            const sendOtpToMobileNoResponse = await handleSendOtp(reqBody);
+            if (sendOtpToMobileNoResponse) {
+                if (!isNullUndefinedOrBlank(sendOtpToMobileNoResponse)) {
+                    setIsMobileOtpVerifyTab(true);
+
+                }
+            }
         }
 
 
 
     }
+    /**
+     * Function to handle OTP verification and login for mobile number authentication.
+     * Validates the form data, sends the OTP, and performs login upon successful OTP verification.
+     */
+    const handleVerifyOtpAndLogin = async () => {
+        loginFormData.handleSubmit();
+        const loginFormErrors = await loginFormData.validateForm();
+        if (Object.keys(loginFormErrors).length > 0) {
+            loginFormData.setTouched(
+                setNestedObjectValues<
+                    FormikTouched<FormikValues>
+                >(loginFormErrors, true));
+
+            return;
+        }
+        const reqBody = { ...loginFormData.values };
+        customJsonInclude(reqBody);
+        const response = await props.loginWithMobileNoToSystem(reqBody);
+        if (response) {
+            if (!isNullUndefinedOrBlank(response)) {
+                navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
+                setToken(response?.payload?.token);
+            }
+        }
+    }
+    /**
+ * Function to change the selected login tab.
+ * Checks if the provided tab is different from the currently selected tab,
+ * and updates the selected tab accordingly.
+ * @param {string} tab The tab to be selected.
+ */
     const changeTab = (tab) => {
         if (tab !== selectedTab) {
             setSelctedTab(tab);
@@ -188,149 +289,245 @@ const Login = (props) => {
     }
 
 
+
+    /**
+ * Function to handle Google sign-up process.
+ */
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: (credentialResponse) => {
+
+            if (!isNullUndefinedOrBlank(credentialResponse.access_token)) {
+                handleGoogleWithLoginData(credentialResponse.access_token);
+            }
+
+        },
+        onError: (error) => console.log('Login Failed:', error)
+    })
+
+    /**
+ * Function to handle login with Google authentication data.
+ * Retrieves user data from Google using the provided access token,
+ * and performs login with the obtained user data.
+ * @param {string} access_token Access token for Google authentication.
+ */
+    const handleGoogleWithLoginData = async (access_token) => {
+        axios
+            .get(`${GET_GOOGLE_USERS_DATA_API}${access_token}`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then(async (res) => {
+                if (!isEmptyObjectOrNullUndefiend(res?.data)) {
+                    const reqBody = {
+                        firstName: res?.data?.given_name,
+                        lastName: res?.data?.family_name,
+                        email: res?.data?.email,
+                        googleId: res?.data?.id,
+                        type: ENUMFORSIGNUPORLOGINOPTION.GOOGLE,
+
+                    }
+                    const response = await props.loginToSystem(reqBody);
+                    if (response) {
+                        if (!isNullUndefinedOrBlank(response.payload.token)) {
+                            navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
+                            setToken(response?.payload?.token);
+                        }
+                    }
+                }
+            })
+            .catch((err) => console.log(err));
+    }
     return (
         <>
             <div className="auth-wrapper">
                 <div className="login-wrapper">
                     <div className="login-left">
-                        <div className="login-left-wrapper ">
-                            <div className="auth-bg-shape">
-                                <img src={bg_shape} alt="" />
-                            </div>
-                            <div className="auth-title">
-                                <img src={logo} alt="logo" />
-                                <h1>Welcome Back</h1>
-                            </div>
-                            <div className="nav-tabs-auth">
-                                <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                    <li className="nav-item" id="email" role="presentation" onClick={() => { changeTab(ENUMFORLOGINTAB.EMAIL) }} >
-                                        <button className={`nav-link ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "active" : ""}`} id="home-tab" data-bs-toggle="tab" type="button" role="tab"><i className="bi bi-envelope-fill"></i>Email</button>
-                                    </li>
-                                    <li className="nav-item" id="mobile-no" role="presentation" onClick={() => { changeTab(ENUMFORLOGINTAB.MOBILE_NO) }}>
-                                        <button className={`nav-link ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "active" : ""}`} id="profile-tab" type="button" role="tab"><i className="bi bi-telephone-fill" ></i>Mobile</button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="tab-content" id="myTabContent">
-                                <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "show active" : ""}`} id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <div className="auth-form">
-                                        <p>Continue with email address</p>
-                                        <Form>
-                                            <Form.Group className="form-group">
-                                                <div className="from-control-icon">
-                                                    <i className="control-icon bi bi-envelope"></i>
-                                                    <Form.Control type="email" placeholder="Your email" {...loginFormData.getFieldProps("email")} />
-                                                    {loginFormData.touched.email &&
-                                                        loginFormData.errors.email
-                                                        ? renderError(loginFormData.errors?.email)
-                                                        : null}
-                                                </div>
-                                            </Form.Group>
-                                            <Form.Group className="form-group" >
-                                                <div className="from-control-icon">
-                                                    <i className="control-icon bi bi-lock"></i>
-                                                    <Form.Control type={eyeToggle ? "text" : "password"} placeholder="Password" {...loginFormData.getFieldProps("password")} />
-                                                    <button className='password-eye' onClick={() => { setEyeToggle(!eyeToggle) }}>
-                                                        {
-                                                            eyeToggle ?
-                                                                <i className="bi bi-eye "></i>
-                                                                :
-                                                                <i className="bi bi-eye-slash"></i>
-                                                        }
-                                                    </button>
-                                                </div>
-                                                {loginFormData.touched.password &&
-                                                    loginFormData.errors.password
-                                                    ? renderError(loginFormData.errors?.password)
-                                                    : null}
-                                            </Form.Group>
-
-                                            <div className="form-group forgot-password">
-                                                <a href='#' className=' btn-link btn-sm'>Forgot Password?</a>
-                                            </div>
-
-                                        </Form>
+                        {
+                            !isMobileOtpVerifyTab ?
+                                <div className="login-left-wrapper ">
+                                    <div className="auth-bg-shape">
+                                        <img src={bg_shape} alt="" />
                                     </div>
-                                </div>
-                                <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div className="auth-form">
-                                        <p>Continue with mobile number</p>
-                                        <Form>
-                                            <Form.Group className="form-group" >
-                                                <div className="from-control-icon">
-                                                    <Select
-                                                        options={countryCodeDropDownData}
-                                                        placeholder={<div>Select Country Code*</div>}
-                                                        onChange={(selectedOption) => { loginFormData.setFieldValue("countryCode", selectedOption?.value); }}
-                                                        value={countryCodeDropDownData?.filter(({ value }) => {
-                                                            return (
-                                                                value ===
-                                                                loginFormData.values.countryCode
-                                                            );
-                                                        })}
-                                                        onBlur={() => { loginFormData.setFieldTouched("countryCode", true) }}
-                                                        isClearable
-                                                        menuPosition="fixed"
-                                                        className="react-select-container"
-                                                    />
-                                                    {loginFormData.touched.countryCode &&
-                                                        loginFormData.errors.countryCode
-                                                        ? renderError(loginFormData.errors?.countryCode as any)
-                                                        : null}
+                                    <div className="auth-title">
+                                        <img src={logo} alt="logo" />
+                                        <h1>Welcome Back</h1>
+                                    </div>
+                                    <div className="nav-tabs-auth">
+                                        <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                            <li className="nav-item" id="email" role="presentation" onClick={() => { changeTab(ENUMFORLOGINTAB.EMAIL) }} >
+                                                <button className={`nav-link ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "active" : ""}`} id="home-tab" data-bs-toggle="tab" type="button" role="tab"><i className="bi bi-envelope-fill"></i>Email</button>
+                                            </li>
+                                            <li className="nav-item" id="mobile-no" role="presentation" onClick={() => { changeTab(ENUMFORLOGINTAB.MOBILE_NO) }}>
+                                                <button className={`nav-link ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "active" : ""}`} id="profile-tab" type="button" role="tab"><i className="bi bi-telephone-fill" ></i>Mobile</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="tab-content" id="myTabContent">
+                                        <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "show active" : ""}`} id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div className="auth-form">
+                                                <p>Continue with email address</p>
+                                                <Form>
+                                                    <Form.Group className="form-group">
+                                                        <div className="from-control-icon">
+                                                            <i className="control-icon bi bi-envelope"></i>
+                                                            <Form.Control type="email" placeholder="Your email" {...loginFormData.getFieldProps("email")} />
+                                                            {loginFormData.touched.email &&
+                                                                loginFormData.errors.email
+                                                                ? renderError(loginFormData.errors?.email)
+                                                                : null}
+                                                        </div>
+                                                    </Form.Group>
+                                                    <Form.Group className="form-group" >
+                                                        <div className="from-control-icon">
+                                                            <i className="control-icon bi bi-lock"></i>
+                                                            <Form.Control type={eyeToggle ? "text" : "password"} placeholder="Password" {...loginFormData.getFieldProps("password")} />
+                                                            <button className='password-eye' onClick={() => { setEyeToggle(!eyeToggle) }}>
+                                                                {
+                                                                    eyeToggle ?
+                                                                        <i className="bi bi-eye "></i>
+                                                                        :
+                                                                        <i className="bi bi-eye-slash"></i>
+                                                                }
+                                                            </button>
+                                                        </div>
+                                                        {loginFormData.touched.password &&
+                                                            loginFormData.errors.password
+                                                            ? renderError(loginFormData.errors?.password)
+                                                            : null}
+                                                    </Form.Group>
 
-                                                </div>
-                                            </Form.Group>
-                                            <Form.Group className="form-group" controlId="exampleForm.ControlInput1">
-                                                <div className="from-control-icon">
-                                                    <i className="control-icon bi bi-telephone"></i>
-                                                    <Form.Control type="text" placeholder="Mobile No" {...loginFormData.getFieldProps("phoneNo")} />
-                                                    {loginFormData.touched.phoneNo &&
-                                                        loginFormData.errors.phoneNo
-                                                        ? renderError(loginFormData.errors?.phoneNo as any)
-                                                        : null}
-                                                </div>
-                                            </Form.Group>
+                                                    <div className="form-group forgot-password">
+                                                        <a href='#' className=' btn-link btn-sm'>Forgot Password?</a>
+                                                    </div>
 
-                                            {/* <div className="auth-btn-group">
+                                                </Form>
+                                            </div>
+                                        </div>
+                                        <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div className="auth-form">
+                                                <p>Continue with mobile number</p>
+                                                <Form>
+                                                    <Form.Group className="form-group" >
+                                                        <div className="from-control-icon">
+                                                            <Select
+                                                                options={countryCodeDropDownData}
+                                                                placeholder={<div>Select Country Code*</div>}
+                                                                onChange={(selectedOption) => { loginFormData.setFieldValue("countryCode", selectedOption?.value); }}
+                                                                value={countryCodeDropDownData?.filter(({ value }) => {
+                                                                    return (
+                                                                        value ===
+                                                                        loginFormData.values.countryCode
+                                                                    );
+                                                                })}
+                                                                onBlur={() => { loginFormData.setFieldTouched("countryCode", true) }}
+                                                                isClearable
+                                                                menuPosition="fixed"
+                                                                className="react-select-container"
+                                                            />
+                                                            {loginFormData.touched.countryCode &&
+                                                                loginFormData.errors.countryCode
+                                                                ? renderError(loginFormData.errors?.countryCode as any)
+                                                                : null}
+
+                                                        </div>
+                                                    </Form.Group>
+                                                    <Form.Group className="form-group" controlId="exampleForm.ControlInput1">
+                                                        <div className="from-control-icon">
+                                                            <i className="control-icon bi bi-telephone"></i>
+                                                            <Form.Control type="text" placeholder="Mobile No" {...loginFormData.getFieldProps("phoneNo")} />
+                                                            {loginFormData.touched.phoneNo &&
+                                                                loginFormData.errors.phoneNo
+                                                                ? renderError(loginFormData.errors?.phoneNo as any)
+                                                                : null}
+                                                        </div>
+                                                    </Form.Group>
+
+                                                    {/* <div className="auth-btn-group">
                                                 <Button variant="primary">Continue</Button>
                                                 <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>
                                             </div>
                                             <div className="sign-up-link">
                                                 <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP) }} >Don’t have an account? Sign up</p>
                                             </div> */}
-                                        </Form>
+                                                </Form>
+                                            </div>
+                                        </div>
+
+
+                                        <div className="form-group-captcha">
+                                            <div className="captcha-control captcha-image">
+                                                {
+                                                    !isNullUndefinedOrBlank(captchaImgUrl) &&
+                                                    <img src={captchaImgUrl} alt="" />
+                                                }
+                                                <button className=' btn-link btn-sm' onClick={() => { handleRegenerateCaptcha(); }}>Regenerate</button>
+                                            </div>
+                                            <Form.Group className="captcha-control captcha-input form-group" >
+                                                <Form.Control type="text" placeholder="Your Captcha" {...loginFormData.getFieldProps("hiddenCaptcha")} />
+                                                {loginFormData.touched.hiddenCaptcha &&
+                                                    loginFormData.errors.hiddenCaptcha
+                                                    ? renderError(loginFormData.errors?.hiddenCaptcha as any)
+                                                    : null}
+                                                {/* <button className='btn btn-primary btn-sm'>Verify</button> */}
+                                            </Form.Group>
+                                        </div>
+
+
+                                        <div className="auth-btn-group">
+                                            <Button variant="primary" onClick={() => { handleSubmitLoginData() }}>Continue</Button>
+                                            <Button variant="outline-secondary" className='btn-icon-start' onClick={() => { handleGoogleLogin(); }}> <img src={google} alt="" /> Google</Button>
+                                        </div>
+                                        <div className="sign-up-link">
+                                            <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP) }} >Don’t have an account? Sign up</p>
+                                        </div>
+                                    </div>
+                                </div> :
+
+                                <div className="login-left-wrapper">
+                                    <div className="auth-bg-shape">
+                                        <img src={bg_shape} alt="" />
+                                    </div>
+                                    <div className="auth-title">
+                                        <img src={logo} alt="logo" />
+                                        <h1>Verification</h1>
+                                        <p>Enter the Verification Code send to <span>{ }</span><a onClick={() => { setIsMobileOtpVerifyTab(false); handleRegenerateCaptcha(); }}><i className="bi bi-pencil"></i></a> </p>
+                                    </div>
+                                    <div className="auth-form otp-form">
+
+                                        <div className="form-group">
+                                            {/* <div className="otp-wrapper"> */}
+                                            <OTPInput
+                                                value={loginFormData.values.otp}
+                                                onChange={(value) => { loginFormData.setFieldValue("otp", value) }}
+
+                                                renderInput={(props) => <input {...props} />}
+                                                inputType="number"
+
+                                                // autoFocus={true}  
+                                                numInputs={6}
+                                                renderSeparator={<span>-</span>}
+
+                                            />
+
+                                            {/* <div className='forms-otp'>
+                      <p>Resend a new code in : <span>{timer}</span></p>
+                      <Button variant='link' onClick={() => { handleReSendOtp() }}>Resend OTP</Button>
+                    </div> */}
+
+                                            <div className="auth-btn-group">
+                                                <Button variant="primary" disabled={loginFormData.values.otp?.length !== 6} onClick={() => { handleVerifyOtpAndLogin(); }}>Verify</Button>
+                                            </div>
+                                            <div className="sign-up-link">
+                                                <p className='text-center' onClick={() => { setIsMobileOtpVerifyTab(false); handleRegenerateCaptcha(); }}>Back to </p>
+                                            </div>
+                                            {/* </div> */}
+                                        </div>
+
                                     </div>
                                 </div>
-
-
-                                <div className="form-group-captcha">
-                                    <div className="captcha-control captcha-image">
-                                        {
-                                            !isNullUndefinedOrBlank(captchaImgUrl) &&
-                                            <img src={captchaImgUrl} alt="" />
-                                        }
-                                        <button className=' btn-link btn-sm'>Regenerate</button>
-                                    </div>
-                                    <Form.Group className="captcha-control captcha-input form-group" >
-                                        <Form.Control type="text" placeholder="Your Captcha" {...loginFormData.getFieldProps("hiddenCaptcha")} />
-                                        {loginFormData.touched.hiddenCaptcha &&
-                                            loginFormData.errors.hiddenCaptcha
-                                            ? renderError(loginFormData.errors?.hiddenCaptcha as any)
-                                            : null}
-                                        {/* <button className='btn btn-primary btn-sm'>Verify</button> */}
-                                    </Form.Group>
-                                </div>
-
-
-                                <div className="auth-btn-group">
-                                    <Button variant="primary" onClick={() => { handleSubmitLoginData() }}>Continue</Button>
-                                    <Button variant="outline-secondary" className='btn-icon-start'> <img src={google} alt="" /> Google</Button>
-                                </div>
-                                <div className="sign-up-link">
-                                    <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP) }} >Don’t have an account? Sign up</p>
-                                </div>
-                            </div>
-                        </div>
+                        }
 
 
                     </div>
@@ -355,7 +552,9 @@ const mapDispatchToProps = {
     getVerifyCaptchaAPI,
     getRegenerateCaptchaAPI,
     getGenerateCaptchaAPI,
-    loginToSystem
+    loginToSystem,
+    SendOtpDataAPI,
+    loginWithMobileNoToSystem
 
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

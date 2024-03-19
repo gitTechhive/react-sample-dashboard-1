@@ -14,15 +14,14 @@ import * as yup from 'yup';
 import { ONLY_NUMBERS, PATTERN_EMAIL } from '../../../Utility/Validation_Helper';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, setToken } from '../../../Utility/Helper';
-import { getRegenerateCaptchaAPI } from '../../../redux/Service/generic';
+import { SendOtpDataAPI, getRegenerateCaptchaAPI } from '../../../redux/Service/generic';
 import { SignUpDataAPI, SignUpWithGoogleDataAPI } from '../../../redux/Service/signup';
-import { SendOtpDataAPI } from './../../../redux/Service/signup';
 import { getGenerateCaptchaAPI, getCountryPrefixAPI, getVerifyCaptchaAPI } from './../../../redux/Service/generic';
 import Select from "react-select";
 import OTPInput from 'react-otp-input';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { GET_GOOGLE_USERS_DATA_API } from '../../../Utility/ApiList';
+import { GET_GOOGLE_USERS_DATA_API,  SEND_OTP_EMAIL_DATA_API } from '../../../Utility/ApiList';
 const Signup = (props) => {
     /**Hook from React Router for navigation  */
     const navigate = useNavigate();
@@ -64,9 +63,9 @@ const Signup = (props) => {
         if (!(step === signUpStep)) {
             setSignUpStep(step);
             userDetailsFormData.setFieldValue("otp", "");
-            if (signUpStep === ENUMFORSIGNUPSTEP.VERIFY_OTP) {
-                handleRegenerateCaptcha();
-            }
+       
+                
+          
 
         }
 
@@ -213,7 +212,7 @@ const Signup = (props) => {
         delete newData.hiddenCaptcha;
         customJsonInclude(newData);
 
-        const response = await props.SendOtpDataAPI(newData);
+        const response = await props.SendOtpDataAPI(SEND_OTP_EMAIL_DATA_API,newData);
         if (response) {
             userDetailsFormData.setFieldValue("requestId", !isNullUndefinedOrBlank(response?.payload?.requestId) ? response?.payload?.requestId : "");
             return true;
@@ -427,7 +426,7 @@ const Signup = (props) => {
                                 <div className="auth-title">
                                     <img src={logo} alt="logo" />
                                     <h1>Verification</h1>
-                                    <p>Enter the Verification Code send to <span>{!isNullUndefinedOrBlank(userDetailsFormData.values.email) ? userDetailsFormData.values.email : "-"}</span><a onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS) }}><i className="bi bi-pencil"></i></a> </p>
+                                    <p>Enter the Verification Code send to <span>{!isNullUndefinedOrBlank(userDetailsFormData.values.email) ? userDetailsFormData.values.email : "-"}</span><a onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS); handleRegenerateCaptcha(); }}><i className="bi bi-pencil"></i></a> </p>
                                 </div>
                                 <div className="auth-form otp-form">
 
@@ -455,7 +454,7 @@ const Signup = (props) => {
                                             <Button variant="primary" disabled={userDetailsFormData.values.otp?.length !== 6} onClick={() => { handleVerifyAndSubmitDetails(); }}>Verify</Button>
                                         </div>
                                         <div className="sign-up-link">
-                                            <p className='text-center' onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS) }}>Back to Sign Up</p>
+                                            <p className='text-center' onClick={() => { changeStep(ENUMFORSIGNUPSTEP.USER_DETAILS); handleRegenerateCaptcha(); }}>Back to Sign Up</p>
                                         </div>
                                         {/* </div> */}
                                     </div>

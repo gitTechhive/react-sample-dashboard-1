@@ -21,6 +21,8 @@ import {
   GET_VERIFY_CAPTCHA_FAILURE,
   GET_COUNTRY_PREFIX_FAILURE,
   GET_COUNTRY_PREFIX_SUCCESS,
+  SEND_OTP_FAILURE,
+  SEND_OTP_SUCCESS,
 
 } from "./generic.type";
 import { RooteAction } from "../store";
@@ -203,6 +205,22 @@ export const getVerifyCaptchaSuccess = (obj: any): RooteAction => {
 export const getVerifyCaptchaFailure = (): RooteAction => {
   return { type: GET_VERIFY_CAPTCHA_FAILURE, payload: {} };
 };
+/**
+ * Action creator function to dispatch action when OTP is successfully.
+ * @param obj Object containing OTP data.
+ * @returns Action object with type SEND_OTP_SUCCESS and payload obj.
+ */
+export const SendOtpSuccess = (obj): RooteAction => {
+  return { type: SEND_OTP_SUCCESS, payload: obj };
+};
+/**
+* Action creator function to dispatch action when OTP sending fails .
+* @returns Action object with type SEND_OTP_FAILURE and an empty payload.
+*/
+export const SendOtpFailure = (): RooteAction => {
+  return { type: SEND_OTP_FAILURE, payload: {} };
+};
+
 /**
  * Action creator for resetting generic data.
  * @returns Action object.
