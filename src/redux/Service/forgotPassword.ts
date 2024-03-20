@@ -9,22 +9,19 @@ import { getForgotPasswordFailure, getForgotPasswordSuccess, sendOtpToMailFailur
 import { AppDispatch } from "../store";
 
 /**
-*send Sign Up Data
-* @param {*} objBody
-* @method SignUpDataAPI
-* @url users/
-* @returns API will  return send Email otp
-*/
-
-
-
+ * Sends forgot password data to the server.
+ * @param objBody The data to be sent in the request body.
+ * @method ForgotPasswordDataAPI
+ * @url forgotPwd
+ * @returns API will return Success.
+ */
 export const ForgotPasswordDataAPI =
     (objBody: any = undefined) =>
         async (dispatch: AppDispatch) => {
             /** Dispatch loading action to indicate start of API call */
             dispatch(loading(true));
             try {
-                /**Make API call to fetch Captcha data  */
+                /**Make API call to fetch  data  */
                 const response: any = await post(FORGOT_PASSWORD_DATA_API, objBody);
                 /**Check if response doesn't contain error  */
                 if (!response.data.error) {
@@ -44,22 +41,19 @@ export const ForgotPasswordDataAPI =
         };
         
 /**
-*send Sign Up Data
-* @param {*} objBody
-* @method SignUpDataAPI
-* @url users/
-* @returns API will  return send Email otp
-*/
-
-
-
+ * Sends OTP to email for forgot password.
+ * @param objBody The data to be sent in the request body.
+ * @method SendOtpToEmailAPI
+ * @url forgotPassOtpGeneratorAdmin
+ * @returns API will return send Email OTP.
+ */
 export const SendOtpToEmailAPI =
     (objBody: any = undefined) =>
         async (dispatch: AppDispatch) => {
             /** Dispatch loading action to indicate start of API call */
             dispatch(loading(true));
             try {
-                /**Make API call to fetch Captcha data  */
+                /**Make API call to fetch  data  */
                 const response: any = await post(SEND_OTP_TO_EMAIL_FOR_FORGOT_PASSWORD_API, objBody);
                 /**Check if response doesn't contain error  */
                 if (!response.data.error) {
@@ -80,14 +74,12 @@ export const SendOtpToEmailAPI =
 
                 
 /**
-*send Sign Up Data
-* @param {*} objBody
-* @method SignUpDataAPI
-* @url users/
-* @returns API will  return send Email otp
-*/
-
-
+ * Sends verification OTP for forgot password.
+ * @param objBody The data to be sent in the request body.
+ * @method getVerifyOtpAPI
+ * @url forgotPassOtpVerificationAdmin
+ * @returns API will return Verify Otp.
+ */
 
 export const getVerifyOtpAPI =
 (objBody: any = undefined) =>
@@ -95,7 +87,7 @@ export const getVerifyOtpAPI =
         /** Dispatch loading action to indicate start of API call */
         dispatch(loading(true));
         try {
-            /**Make API call to fetch Captcha data  */
+            /**Make API call to fetch  data  */
             const response: any = await post(VERIFY_OTP_FOR_FORGOT_PASSWORD_API, objBody);
             /**Check if response doesn't contain error  */
             if (!response.data.error) {

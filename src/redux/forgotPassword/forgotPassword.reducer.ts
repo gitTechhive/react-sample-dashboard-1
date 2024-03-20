@@ -1,17 +1,19 @@
 import { RooteAction } from "../store";
 import { GET_FORGOT_PASSWORD_FAILURE, GET_FORGOT_PASSWORD_SUCCESS, GET_VERIFY_OTP_FAILURE, GET_VERIFY_OTP_SUCCESS, SEND_OTP_TO_MAIL_FAILURE, SEND_OTP_TO_MAIL_SUCCESS } from "./forgotPassword.type";
 
-
+/**
+ * Represents the initial state for the forgot password feature.
+ */
 export interface ForgotPasswordInitializeState {
-    /** Indicates whether the login was successful */
+     /** Indicates whether the forgot password request was successful */
     forgotPasswordSuccess: boolean;
-    /**Contains login-related data  */
+   /** Contains data related to the forgot password process */
     forgotPasswordData: any;
-    /**Contains login-related data  */
+     /** Contains data related to sending OTP to email */
     sendOtpToEmailData: any;
 
 
-    /** Contains user-related data */
+  /** Contains data related to OTP verification */
     verifyOtpData: any;
     /** Indicates whether an asynchronous operation is in progress */
     loading: boolean;
@@ -25,12 +27,12 @@ export interface ForgotPasswordInitializeState {
     loading: false,
   };
   
-  /**
-   * Reducer function responsible for managing login-related state.
-   * @param state Current state of the login module. Defaults to initial state if not provided.
-   * @param action Action dispatched to update the state.
-   * @returns Updated state based on the dispatched action.
-   */
+ /**
+ * Reducer function responsible for managing state related to the forgot password feature.
+ * @param state Current state of the forgot password module. Defaults to initial state if not provided.
+ * @param action Action dispatched to update the state.
+ * @returns Updated state based on the dispatched action.
+ */
   function ForgotPasswordReducer(
     state: ForgotPasswordInitializeState = initialState,
     action: RooteAction

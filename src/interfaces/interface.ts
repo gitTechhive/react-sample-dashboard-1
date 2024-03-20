@@ -229,13 +229,13 @@ export interface SignUpData {
 
 }
 /**
- * SignUpData interface.
+ * Forgot Password data interface.
  */
 export interface ForgotPasswordData {
  email:string;
- otp:string;
+ otp?:string;
  password:string;
- confirmPassword:string;
+ confirmPassword?:string;
 
 }
 

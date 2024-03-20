@@ -368,7 +368,7 @@ const Login = (props) => {
                                         <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "show active" : ""}`} id="home" role="tabpanel" aria-labelledby="home-tab">
                                             <div className="auth-form">
                                                 <p>Continue with email address</p>
-                                                <Form>
+                                              
                                                     <Form.Group className="form-group">
                                                         <div className="from-control-icon">
                                                             <i className="control-icon bi bi-envelope"></i>
@@ -402,7 +402,7 @@ const Login = (props) => {
                                                         <a  className=' btn-link btn-sm'>Forgot Password?</a>
                                                     </div>
 
-                                                </Form>
+                                               
                                             </div>
                                         </div>
                                         <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">

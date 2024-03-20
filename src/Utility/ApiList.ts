@@ -27,13 +27,13 @@ export const GET_VERIFY_CAPTCHA_DATA_API = "captcha/verification";
 export const SEND_OTP_EMAIL_DATA_API = "users/sendOtp";
 /** API endpoint for sending OTP to email. */
 export const SEND_OTP_TO_EMAIL_FOR_FORGOT_PASSWORD_API = "forgotPassOtpGeneratorAdmin";
-/** API endpoint for sending OTP to email. */
+/** API endpoint for verifying OTP for forgot password. */
 export const VERIFY_OTP_FOR_FORGOT_PASSWORD_API = "forgotPassOtpVerificationAdmin";
 /** API endpoint for sending OTP to mobile number. */
 export const SEND_OTP_TO_MOBILE_NO_DATA_API = "sendOtpLoginPhoneNo";
 /**API endpoint for Sign up data  */
 export const SIGN_UP_DATA_API = "users/";
-/**API endpoint for Sign up data  */
+/** API endpoint for submitting forgot password data. */
 export const FORGOT_PASSWORD_DATA_API = "forgotPwd";
 /**API endpoint for Google Sign up data  */
 export const SIGN_UP_WITH_GOOGLE_DATA_API = "users/singUpGoogle";
