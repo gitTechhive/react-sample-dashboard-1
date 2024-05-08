@@ -1,9 +1,14 @@
-
-*{
+* {
     padding: 0;
     margin: 0;
 }
 
-body{
+body {
     font-family: "Rubik", sans-serif;
+}
+
+.error-msg {
+    font-size: 13px !important;
+    margin-bottom: 0 !important;
+    color: $danger_color !important;
 }

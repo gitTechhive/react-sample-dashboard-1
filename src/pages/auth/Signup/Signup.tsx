@@ -21,7 +21,8 @@ import Select from "react-select";
 import OTPInput from 'react-otp-input';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { GET_GOOGLE_USERS_DATA_API,  SEND_OTP_EMAIL_DATA_API } from '../../../Utility/ApiList';
+import { GET_GOOGLE_USERS_DATA_API, SEND_OTP_EMAIL_DATA_API } from '../../../Utility/ApiList';
+import { Link } from 'react-router-dom';
 const Signup = (props) => {
     /**Hook from React Router for navigation  */
     const navigate = useNavigate();
@@ -63,9 +64,9 @@ const Signup = (props) => {
         if (!(step === signUpStep)) {
             setSignUpStep(step);
             userDetailsFormData.setFieldValue("otp", "");
-       
-                
-          
+
+
+
 
         }
 
@@ -126,7 +127,7 @@ const Signup = (props) => {
         firstName: yup.string().required("First Name is required !!"),
         lastName: yup.string().required("Last Name is required !!"),
         email: yup.string().trim().matches(PATTERN_EMAIL, "Please Enter a valid Email.").required("Email is required !!"),
-        mobileNo: yup.string().trim().matches(ONLY_NUMBERS,"Please Enter Only Numerics Values!!")            
+        mobileNo: yup.string().trim().matches(ONLY_NUMBERS, "Please Enter Only Numerics Values!!")
             .min(7, "Please Enter a valid Mobile No.").required("Mobile No Required!!"),
         countryCode: yup.string().required("Country Code is required !!"),
         hiddenCaptcha: yup.string().required("Captcha is required !!")
@@ -212,7 +213,7 @@ const Signup = (props) => {
         delete newData.hiddenCaptcha;
         customJsonInclude(newData);
 
-        const response = await props.SendOtpDataAPI(SEND_OTP_EMAIL_DATA_API,newData);
+        const response = await props.SendOtpDataAPI(SEND_OTP_EMAIL_DATA_API, newData);
         if (response) {
             userDetailsFormData.setFieldValue("requestId", !isNullUndefinedOrBlank(response?.payload?.requestId) ? response?.payload?.requestId : "");
             return true;
@@ -291,9 +292,9 @@ const Signup = (props) => {
     return (
         <>
             <div className="auth-wrapper">
-                <div className="login-wrapper">
-                    <div className="login-left">
-                        <div className="login-left-wrapper">
+                <div className="auth-wrapper">
+                    <div className="auth-left">
+                        <div className="auth-left-wrapper">
                             <div className="auth-bg-shape">
                                 <img src={bg_shape} alt="" />
                             </div>
@@ -308,7 +309,7 @@ const Signup = (props) => {
                                     <Form>
                                         <Row>
                                             <Col>
-                                                <Form.Group className="form-group" >
+                                                <Form.Group className="form-group " >
                                                     <div className="from-control-icon">
                                                         <i className="control-icon bi bi-person-circle"></i>
                                                         <Form.Control type="text" placeholder="First Name" {...userDetailsFormData.getFieldProps("firstName")} />
@@ -320,7 +321,7 @@ const Signup = (props) => {
                                                 </Form.Group>
                                             </Col>
                                             <Col>
-                                                <Form.Group className="form-group" >
+                                                <Form.Group className="form-group " >
                                                     <div className="from-control-icon">
                                                         <i className="control-icon bi bi-person-circle"></i>
                                                         <Form.Control type="text" placeholder="Last Name" {...userDetailsFormData.getFieldProps("lastName")} />
@@ -410,7 +411,7 @@ const Signup = (props) => {
                                             <Button variant="outline-secondary" className='btn-icon-start' onClick={() => { handleGoogleSignUp(); }}> <img src={google} alt="" /> Google</Button>
                                         </div>
                                         <div className="sign-up-link">
-                                            <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.LOGIN) }}>Already have an account?Sign In</p>
+                                            <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.LOGIN) }}>Already have an account? <Link to="/log-in" className="text-primary"> Sign In</Link></p>
                                         </div>
                                     </Form>
                                 </div>
@@ -419,7 +420,7 @@ const Signup = (props) => {
                         {
                             signUpStep === ENUMFORSIGNUPSTEP.VERIFY_OTP &&
 
-                            <div className="login-left-wrapper">
+                            <div className="auth-left-wrapper">
                                 <div className="auth-bg-shape">
                                     <img src={bg_shape} alt="" />
                                 </div>
@@ -430,7 +431,7 @@ const Signup = (props) => {
                                 </div>
                                 <div className="auth-form otp-form">
 
-                                    <div className="form-group">
+                                    <div className="form-group otp-input">
                                         {/* <div className="otp-wrapper"> */}
                                         <OTPInput
                                             value={userDetailsFormData.values.otp}
@@ -484,11 +485,11 @@ const Signup = (props) => {
                             </div>
                         }
                     </div>
-                    <div className="login-right">
+                    <div className="auth-right">
                         <AuthSidebar />
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }

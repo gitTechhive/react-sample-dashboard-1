@@ -17,6 +17,7 @@ import { CONFIRM_PASSWORD_NOT_MATCHED, PASSWORD_INVALID, PATTERN_EMAIL, PATTERN_
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import { customJsonInclude, isNullUndefinedOrBlank, renderError } from '../../../Utility/Helper';
 import OTPInput from 'react-otp-input';
+import { Link } from 'react-router-dom';
 const ForgotPassword = (props) => {
     /**
 * Retrieves the navigation function from the React Router.
@@ -164,14 +165,14 @@ const ForgotPassword = (props) => {
 
     return (
         <div className="auth-wrapper">
-            <div className="login-wrapper">
-                <div className="login-left">
+            <div className="auth-wrapper">
+                <div className="auth-left">
 
                     {
                         forgotPasswordStep === ENUMFORFORGOTPASSWORDSTEP.EMAIL &&
-                        <div className="login-left-wrapper">
+                        <div className="auth-left-wrapper">
                             <div className="auth-bg-shape">
-                                <img src={bg_shape} alt="" />
+                                <img src={bg_shape} alt="bg_shape" />
                             </div>
                             <div className="auth-title">
                                 <img src={forgot_password} alt="logo" />
@@ -184,18 +185,18 @@ const ForgotPassword = (props) => {
                                     <div className="from-control-icon">
                                         <i className="control-icon bi bi-envelope"></i>
                                         <Form.Control type="email" placeholder="Your email" onKeyDown={(event) => { handleKeyPress(event) }} {...forgotPasswordFormData.getFieldProps("email")} />
-                                        {forgotPasswordFormData.touched.email &&
-                                            forgotPasswordFormData.errors.email
-                                            ? renderError(forgotPasswordFormData.errors?.email)
-                                            : null}
                                     </div>
+                                    {forgotPasswordFormData.touched.email &&
+                                        forgotPasswordFormData.errors.email
+                                        ? renderError(forgotPasswordFormData.errors?.email)
+                                        : null}
                                 </Form.Group>
 
                                 <div className="auth-btn-group">
-                                    <Button variant="primary" onClick={() => { handleSubmitData() }}>Continue</Button>
+                                    <Button variant="primary" onClick={() => { handleSubmitData() }} type="button" >Continue</Button>
                                 </div>
                                 <div className="sign-up-link" onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.LOGIN) }}>
-                                    <p className='text-center'>Back to <a >Sign In</a></p>
+                                    <p className='text-center'>Back to <Link to="/sign-in" className="text-primary"> Sign In</Link></p>
                                 </div>
 
                             </div>
@@ -203,9 +204,9 @@ const ForgotPassword = (props) => {
                     }
                     {
                         forgotPasswordStep === ENUMFORFORGOTPASSWORDSTEP.VERIFY_OTP &&
-                        <div className="login-left-wrapper ">
+                        <div className="auth-left-wrapper ">
                             <div className="auth-bg-shape">
-                                <img src={bg_shape} alt="" />
+                                <img src={bg_shape} alt="bg_shape" />
                             </div>
                             <div className="auth-title">
                                 <img src={verification} alt="logo" />
@@ -252,9 +253,9 @@ const ForgotPassword = (props) => {
                     }
                     {
                         forgotPasswordStep === ENUMFORFORGOTPASSWORDSTEP.CHANGE_PASSWORD &&
-                        <div className="login-left-wrapper ">
+                        <div className="auth-left-wrapper ">
                             <div className="auth-bg-shape">
-                                <img src={bg_shape} alt="" />
+                                <img src={bg_shape} alt="bg_shape" />
                             </div>
                             <div className="auth-title">
                                 <img src={forgot_password} alt="logo" />
@@ -313,9 +314,9 @@ const ForgotPassword = (props) => {
 
                     {
                         forgotPasswordStep === ENUMFORFORGOTPASSWORDSTEP.CHANGED_COMPLETED &&
-                        <div className="login-left-wrapper ">
+                        <div className="auth-left-wrapper ">
                             <div className="auth-bg-shape">
-                                <img src={bg_shape} alt="" />
+                                <img src={bg_shape} alt="bg_shape" />
                             </div>
                             <div className="auth-title">
                                 <img src={verification} alt="logo" />
@@ -335,11 +336,11 @@ const ForgotPassword = (props) => {
                         </div>}
 
                 </div>
-                <div className="login-right">
+                <div className="auth-right">
                     <AuthSidebar />
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

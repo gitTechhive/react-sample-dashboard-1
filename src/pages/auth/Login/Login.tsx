@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { RootState } from '../../../redux/store';
 import { connect } from 'react-redux';
 import { loading } from '../../../redux/Loader/loader.action';
-import logo from '../../../assets/imgaes/verification.svg';
+import verification from '../../../assets/imgaes/verification.svg';
+import logo from '../../../assets/imgaes/auth-logo-small.svg';
 import captcha from '../../../assets/imgaes/captcha.png';
 import google from '../../../assets/imgaes/google.svg';
 import bg_shape from '../../../assets/imgaes/bg-shape.png';
@@ -21,6 +22,7 @@ import { GET_GOOGLE_USERS_DATA_API, SEND_OTP_TO_MOBILE_NO_DATA_API } from '../..
 import OTPInput from 'react-otp-input';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 /**
  * Login Component
  * @param {object} props - Props passed to the component
@@ -342,11 +344,11 @@ const Login = (props) => {
     return (
         <>
             <div className="auth-wrapper">
-                <div className="login-wrapper">
-                    <div className="login-left">
+                <div className="auth-wrapper">
+                    <div className="auth-left">
                         {
                             !isMobileOtpVerifyTab ?
-                                <div className="login-left-wrapper ">
+                                <div className="auth-left-wrapper ">
                                     <div className="auth-bg-shape">
                                         <img src={bg_shape} alt="" />
                                     </div>
@@ -368,81 +370,91 @@ const Login = (props) => {
                                         <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.EMAIL ? "show active" : ""}`} id="home" role="tabpanel" aria-labelledby="home-tab">
                                             <div className="auth-form">
                                                 <p>Continue with email address</p>
-                                              
-                                                    <Form.Group className="form-group">
-                                                        <div className="from-control-icon">
-                                                            <i className="control-icon bi bi-envelope"></i>
-                                                            <Form.Control type="email" placeholder="Your email" {...loginFormData.getFieldProps("email")} />
-                                                            {loginFormData.touched.email &&
-                                                                loginFormData.errors.email
-                                                                ? renderError(loginFormData.errors?.email)
-                                                                : null}
-                                                        </div>
-                                                    </Form.Group>
-                                                    <Form.Group className="form-group" >
-                                                        <div className="from-control-icon">
-                                                            <i className="control-icon bi bi-lock"></i>
-                                                            <Form.Control type={eyeToggle ? "text" : "password"} placeholder="Password" {...loginFormData.getFieldProps("password")} />
-                                                            <button className='password-eye' onClick={() => { setEyeToggle(!eyeToggle) }}>
-                                                                {
-                                                                    eyeToggle ?
-                                                                        <i className="bi bi-eye "></i>
-                                                                        :
-                                                                        <i className="bi bi-eye-slash"></i>
-                                                                }
-                                                            </button>
-                                                        </div>
-                                                        {loginFormData.touched.password &&
-                                                            loginFormData.errors.password
-                                                            ? renderError(loginFormData.errors?.password)
-                                                            : null}
-                                                    </Form.Group>
 
-                                                    <div className="form-group forgot-password" onClick={()=>{navigateToRelatedScreen(ENUMFORROUTES.FORGOT_PASSWORD)}}>
-                                                        <a  className=' btn-link btn-sm'>Forgot Password?</a>
+
+
+                                                <Form.Group className="form-group">
+                                                    <div className="from-control-icon">
+                                                        <i className="control-icon bi bi-envelope"></i>
+                                                        <Form.Control type="email" placeholder="Your email" {...loginFormData.getFieldProps("email")} />
                                                     </div>
+                                                    {loginFormData.touched.email &&
+                                                        loginFormData.errors.email
+                                                        ? renderError(loginFormData.errors?.email)
+                                                        : null}
+                                                </Form.Group>
+                                                <Form.Group className="form-group" >
+                                                    <div className="from-control-icon">
+                                                        <i className="control-icon bi bi-lock"></i>
+                                                        <Form.Control type={eyeToggle ? "text" : "password"} placeholder="Password" {...loginFormData.getFieldProps("password")} />
+                                                        <button className='password-eye' onClick={() => { setEyeToggle(!eyeToggle) }} type="button" >
+                                                            {
+                                                                eyeToggle ?
+                                                                    <i className="bi bi-eye "></i>
+                                                                    :
+                                                                    <i className="bi bi-eye-slash"></i>
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                    {loginFormData.touched.password &&
+                                                        loginFormData.errors.password
+                                                        ? renderError(loginFormData.errors?.password)
+                                                        : null}
+                                                </Form.Group>
 
-                                               
+                                                <div className="form-group forgot-password" >
+                                                    {/* <button type='button' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.FORGOT_PASSWORD) }}>Forgot Password?</button> */}
+                                                    <Link className='btn-link btn-sm' to={ENUMFORROUTES.FORGOT_PASSWORD}>
+                                                        Forgot Password ?
+                                                    </Link>
+
+                                                </div>
+
+
                                             </div>
                                         </div>
                                         <div className={`tab-pane fade  ${selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? "show active" : ""}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             <div className="auth-form">
                                                 <p>Continue with mobile number</p>
                                                 <Form>
-                                                    <Form.Group className="form-group" >
-                                                        <div className="from-control-icon">
-                                                            <Select
-                                                                options={countryCodeDropDownData}
-                                                                placeholder={<div>Select Country Code*</div>}
-                                                                onChange={(selectedOption) => { loginFormData.setFieldValue("countryCode", selectedOption?.value); }}
-                                                                value={countryCodeDropDownData?.filter(({ value }) => {
-                                                                    return (
-                                                                        value ===
-                                                                        loginFormData.values.countryCode
-                                                                    );
-                                                                })}
-                                                                onBlur={() => { loginFormData.setFieldTouched("countryCode", true) }}
-                                                                isClearable
-                                                                menuPosition="fixed"
-                                                                className="react-select-container"
-                                                            />
+
+                                                    <div className='mobile-number'>
+                                                        <Form.Group className="form-group form-group-country-code" >
+                                                            <div className="from-control-icon">
+                                                                <Select
+                                                                    options={countryCodeDropDownData}
+                                                                    placeholder={<div>Country Code*</div>}
+                                                                    onChange={(selectedOption) => { loginFormData.setFieldValue("countryCode", selectedOption?.value); }}
+                                                                    value={countryCodeDropDownData?.filter(({ value }) => {
+                                                                        return (
+                                                                            value ===
+                                                                            loginFormData.values.countryCode
+                                                                        );
+                                                                    })}
+                                                                    onBlur={() => { loginFormData.setFieldTouched("countryCode", true) }}
+                                                                    isClearable
+                                                                    menuPosition="fixed"
+                                                                    className="react-select-container"
+                                                                />
+
+                                                            </div>
                                                             {loginFormData.touched.countryCode &&
                                                                 loginFormData.errors.countryCode
                                                                 ? renderError(loginFormData.errors?.countryCode as any)
                                                                 : null}
+                                                        </Form.Group>
 
-                                                        </div>
-                                                    </Form.Group>
-                                                    <Form.Group className="form-group" controlId="exampleForm.ControlInput1">
-                                                        <div className="from-control-icon">
-                                                            <i className="control-icon bi bi-telephone"></i>
-                                                            <Form.Control type="text" placeholder="Mobile No" {...loginFormData.getFieldProps("phoneNo")} />
+                                                        <Form.Group className="form-group form-group-mobile-number" controlId="exampleForm.ControlInput1">
+                                                            <div className="from-control-icon">
+                                                                <i className="control-icon bi bi-telephone"></i>
+                                                                <Form.Control type="text" placeholder="Mobile No" {...loginFormData.getFieldProps("phoneNo")} />
+                                                            </div>
                                                             {loginFormData.touched.phoneNo &&
                                                                 loginFormData.errors.phoneNo
                                                                 ? renderError(loginFormData.errors?.phoneNo as any)
                                                                 : null}
-                                                        </div>
-                                                    </Form.Group>
+                                                        </Form.Group>
+                                                    </div>
 
                                                     {/* <div className="auth-btn-group">
                                                 <Button variant="primary">Continue</Button>
@@ -462,7 +474,7 @@ const Login = (props) => {
                                                     !isNullUndefinedOrBlank(captchaImgUrl) &&
                                                     <img src={captchaImgUrl} alt="" />
                                                 }
-                                                <button className=' btn-link btn-sm' onClick={() => { handleRegenerateCaptcha(); }}>Regenerate</button>
+                                                <button className=' btn-link btn-sm' onClick={() => { handleRegenerateCaptcha(); }} type="button" >Regenerate</button>
                                             </div>
                                             <Form.Group className="captcha-control captcha-input form-group" >
                                                 <Form.Control type="text" placeholder="Your Captcha" {...loginFormData.getFieldProps("hiddenCaptcha")} />
@@ -476,16 +488,20 @@ const Login = (props) => {
 
 
                                         <div className="auth-btn-group">
-                                            <Button variant="primary" onClick={() => { handleSubmitLoginData() }}>Continue</Button>
-                                            <Button variant="outline-secondary" className='btn-icon-start' onClick={() => { handleGoogleLogin(); }}> <img src={google} alt="" /> Google</Button>
+                                            <Button variant="primary" onClick={() => { handleSubmitLoginData() }}  >Continue</Button>
+                                            <Button variant="outline-secondary" className='btn-icon-start' onClick={() => { handleGoogleLogin(); }}  > <img src={google} alt="" /> Google</Button>
                                         </div>
                                         <div className="sign-up-link">
-                                            <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP) }} >Don’t have an account? Sign up</p>
+                                            {/* <p className='text-center' onClick={() => { navigateToRelatedScreen(ENUMFORROUTES.SIGN_UP) }} >Don’t have an account? Sign up</p> */}
+                                            <p className='text-center'>Don’t have an account? <Link to="/sign-up" className="text-primary">
+                                                Sign up
+                                            </Link></p>
+
                                         </div>
                                     </div>
                                 </div> :
 
-                                <div className="login-left-wrapper">
+                                <div className="auth-left-wrapper">
                                     <div className="auth-bg-shape">
                                         <img src={bg_shape} alt="" />
                                     </div>
@@ -531,7 +547,7 @@ const Login = (props) => {
 
 
                     </div>
-                    <div className="login-right">
+                    <div className="auth-right">
                         <AuthSidebar />
                     </div>
                 </div>
