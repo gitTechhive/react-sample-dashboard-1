@@ -33,6 +33,7 @@ export const ENUMFORROUTES = {
   USER_MANGEMNET: "/user-mangemnet",
   FORGOT_PASSWORD: "/forgot-password",
   SIGN_UP: "/sign-up",
+  SETTINGS: "/settings",
 
 }
 
@@ -62,8 +63,8 @@ export const ENUMFORLOGINTAB = {
 export const ENUMFORFORGOTPASSWORDSTEP = {
   EMAIL: "email",
   VERIFY_OTP: "verify otp",
-  CHANGE_PASSWORD:"change Password",
-  CHANGED_COMPLETED:"changed completed"
+  CHANGE_PASSWORD: "change Password",
+  CHANGED_COMPLETED: "changed completed"
 
 } as const;
 /**
@@ -232,10 +233,10 @@ export interface SignUpData {
  * Forgot Password data interface.
  */
 export interface ForgotPasswordData {
- email:string;
- otp?:string;
- password:string;
- confirmPassword?:string;
+  email: string;
+  otp?: string;
+  password: string;
+  confirmPassword?: string;
 
 }
 

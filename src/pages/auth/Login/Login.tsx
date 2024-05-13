@@ -14,7 +14,7 @@ import { DropdownListFormat, ENUMFORLOGINTAB, ENUMFORROUTES, ENUMFORSIGNUPORLOGI
 import { customJsonInclude, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, setToken } from '../../../Utility/Helper';
 import { SendOtpDataAPI, getCountryPrefixAPI, getGenerateCaptchaAPI, getRegenerateCaptchaAPI, getVerifyCaptchaAPI } from '../../../redux/Service/generic';
 import * as yup from 'yup';
-import { ONLY_NUMBERS, PATTERN_EMAIL, PATTERN_FOR_PASSWORD } from '../../../Utility/Validation_Helper';
+import { ONLY_NUMBERS, PATTERN_EMAIL, PATTERN_FOR_PASSWORD, PATTERN_FOR_PASSWORD_NEW } from '../../../Utility/Validation_Helper';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import Select from "react-select";
 import { loginToSystem, loginWithMobileNoToSystem } from './../../../redux/Service/login';
@@ -176,7 +176,9 @@ const Login = (props) => {
             }),
         password: yup.string().when(
             () => {
-                return selectedTab === ENUMFORLOGINTAB.EMAIL ? yup.string().trim().matches(PATTERN_FOR_PASSWORD, "Please Enter a valid Password .").required("Password is required !!") : yup.string()
+                return selectedTab === ENUMFORLOGINTAB.EMAIL ? yup.string().trim()
+                    // .matches(PATTERN_FOR_PASSWORD, "Please Enter a valid Password .")
+                    .required("Password is required !!") : yup.string()
             }),
         countryCode: yup.string().when(
             () => {
@@ -184,7 +186,7 @@ const Login = (props) => {
             }),
         phoneNo: yup.string().when(
             () => {
-                return selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? yup.string().trim().matches(ONLY_NUMBERS, "Please Enter Only Numerics Values!!")
+                return selectedTab === ENUMFORLOGINTAB.MOBILE_NO ? yup.string().trim().matches(PATTERN_FOR_PASSWORD_NEW, "Please Enter Only Numerics Values!!")
                     .min(7, "Please Enter a valid Mobile No.").required("Mobile No Required!!") : yup.string();
             }),
         hiddenCaptcha: yup.string().required("Captcha is required !!")

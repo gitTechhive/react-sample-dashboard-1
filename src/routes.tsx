@@ -5,7 +5,6 @@ import Login from './pages/auth/Login/Login';
 import Dashboard from './pages/admin/Dashboard/Dashboard';
 import { RouterProps } from './interfaces';
 import { ENUMFORROUTES } from './interfaces/interface';
-import { Navbar } from 'react-bootstrap';
 import Sidebar from './components/Sidebar/Sidebar';
 import GuestRoute from './common/GuestRoute';
 import AuthRoute from './common/AuthRoute';
@@ -14,6 +13,8 @@ import UserMangement from './pages/admin/UserMangement/UserMangement';
 import { jwtDecode } from "jwt-decode";
 import Signup from './pages/auth/Signup/Signup';
 import ForgotPassword from './pages/auth/FrogotPassword/ForgotPassword';
+import Navbar from './components/Navbar/Navbar';
+import Settings from './pages/admin/Settings/Settings';
 
 
 
@@ -26,10 +27,16 @@ const privateRoutes: RouterProps[] = [
     url: ENUMFORROUTES.DASHBOARD,
   },
   {
-    path: ENUMFORROUTES.USER_MANGEMNET,
-    component: <UserMangement />,
+    path: ENUMFORROUTES.DASHBOARD,
+    component: <Dashboard />,
     caseSensitive: true,
     url: ENUMFORROUTES.DASHBOARD,
+  },
+  {
+    path: ENUMFORROUTES.SETTINGS,
+    component: <Settings />,
+    caseSensitive: true,
+    url: ENUMFORROUTES.SETTINGS,
   },
 
 
@@ -137,22 +144,22 @@ const AppRouter = (props): JSX.Element => {
   //   }
   //   return jsx;
   // }
-  // React.useEffect(() => {
-  //   document.documentElement.setAttribute('data-layout', 'vertical');
-  //   document.documentElement.setAttribute('data-sidebar-size', 'lg');
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-layout', 'vertical');
+    document.documentElement.setAttribute('data-sidebar-size', 'lg');
 
-  //   // var verticalOverlay = document.getElementsByClassName("vertical-overlay");
-  //   // if (verticalOverlay) {
-  //   //   verticalOverlay[0].addEventListener("click", function () {
-  //   //     document.body.classList.remove("vertical-sidebar-enable");
-  //   //   });
-  //   // }
+    // var verticalOverlay = document.getElementsByClassName("vertical-overlay");
+    // if (verticalOverlay) {
+    //   verticalOverlay[0].addEventListener("click", function () {
+    //     document.body.classList.remove("vertical-sidebar-enable");
+    //   });
+    // }
 
-  //   const windowSize = document.documentElement.clientWidth;
-  //   if (windowSize == 768) {
-  //     document.documentElement.setAttribute('data-sidebar-size', 'sm');
-  //   }
-  // }, [isAuthenticated]);
+    const windowSize = document.documentElement.clientWidth;
+    if (windowSize == 768) {
+      document.documentElement.setAttribute('data-sidebar-size', 'sm');
+    }
+  }, [isAuthenticated]);
 
 
 
@@ -237,17 +244,17 @@ const AppRouter = (props): JSX.Element => {
   //   </div>
   // )
   // role sight end
+
+
   return (
 
     <div className={isAuthenticated ? 'layout-wrapper' : ''} id={isAuthenticated ? "layout-wrapper" : ''}>
       <Router>
         {isAuthenticated && (
-
           <Navbar />
         )}
 
         {isAuthenticated && (
-
           <Sidebar />
         )}
         <div className={isAuthenticated ? 'main-content' : ''}>

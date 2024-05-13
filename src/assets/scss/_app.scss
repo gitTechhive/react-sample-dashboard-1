@@ -167,3 +167,146 @@
         }
     }
 }
+
+.main-content {
+    min-height: 100vh;
+}
+
+.layout-wrapper {
+    background-color: #F4F4F4;
+}
+
+.content-area {
+    padding: 15px 12px 55px;
+}
+
+/* ----------------------------- Dashboard Start ---------------------------- */
+.dashboard-welcome {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+
+    .dashboard-welcome-left {
+        h6 {
+            color: #272B30;
+            margin-bottom: 0px;
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }
+
+    .dashboard-welcome-right {
+        .date-filter {
+            gap: 0 10px;
+        }
+    }
+}
+
+.page-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    border-bottom: 0px solid #F2F4F7;
+    padding: 10px 10px;
+
+    .page-title-left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        h4 {
+            color: #272B30;
+            margin-bottom: 0px;
+            font-size: 16px;
+        }
+    }
+
+    .page-title-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+p:nth-last-child(1) {
+    margin-bottom: 0;
+}
+
+.date-filter {
+    display: flex;
+    align-items: center;
+}
+
+/* ------------------------------ Dashboard End ----------------------------- */
+
+/* ----------------------------- settings start ----------------------------- */
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.card-settings-inner {
+    .card-header {
+        padding: 16px 0;
+    }
+
+    .card-body {
+        padding: 16px 0;
+    }
+}
+
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .profile-image {
+        margin-right: 20px;
+        height: 100px;
+        width: 100px;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: #B9C4E1;
+
+        img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+        }
+    }
+
+    .profile-content {
+        h6 {
+            color: #1A1D1F;
+            margin-bottom: 0;
+        }
+
+        p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #667085;
+        }
+
+        .file-name {
+            font-size: 12px;
+            margin-bottom: 0;
+            color: #2A85FF;
+            font-weight: 500;
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+    }
+}
+
+/* ------------------------------ settings end ------------------------------ */
