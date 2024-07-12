@@ -251,19 +251,19 @@ const Settings = (props) => {
 
     /* ----------------------------------------------change password---------------------------------------- */
     const initPasswordSettingsValues: any = {
-        old_password: "",
-        new_password: "",
+        oldPassword: "",
+        newPassword: "",
         confirm_password: ""
     }
     const onSubmit = (values) => {
     }
 
     const validationSchemaChangePass = yup.object({
-        old_password: yup
+        oldPassword: yup
             .string()
             .trim()
             .required("Password is Required!!"),
-        new_password: yup
+        newPassword: yup
             .string()
             .required("New Password is Required!!")
             .notOneOf([yup.ref("old_password"), null], "New password must be different from current password")
@@ -292,7 +292,7 @@ const Settings = (props) => {
     const handleChangePassword = async () => {
         passwordSettingsFormData.handleSubmit();
         const changPasswordErrors = await passwordSettingsFormData.validateForm();
-        // console.log(changPasswordErrors)
+        console.log(changPasswordErrors)
         if (Object.keys(changPasswordErrors).length > 0) {
             passwordSettingsFormData.setTouched(
                 setNestedObjectValues<
@@ -614,18 +614,18 @@ const Settings = (props) => {
                                                                 <Col md={6} >
                                                                     <Form.Group className="form-group mb-3" controlId="formBasicEmail">
                                                                         <Form.Label>Old Password <span>*</span></Form.Label>
-                                                                        <Form.Control type="password" {...passwordSettingsFormData.getFieldProps("old_password")} />
-                                                                        {passwordSettingsFormData.touched.old_password &&
-                                                                            passwordSettingsFormData.errors.old_password
-                                                                            ? renderError(passwordSettingsFormData.errors.old_password as any)
+                                                                        <Form.Control type="password" {...passwordSettingsFormData.getFieldProps("oldPassword")} />
+                                                                        {passwordSettingsFormData.touched.oldPassword &&
+                                                                            passwordSettingsFormData.errors.oldPassword
+                                                                            ? renderError(passwordSettingsFormData.errors.oldPassword as any)
                                                                             : null}
                                                                     </Form.Group>
                                                                     <Form.Group className="form-group mb-3" controlId="formBasicPassword">
                                                                         <Form.Label>New password <span>*</span></Form.Label>
-                                                                        <Form.Control type="password" {...passwordSettingsFormData.getFieldProps("new_password")} />
-                                                                        {passwordSettingsFormData.touched.new_password &&
-                                                                            passwordSettingsFormData.errors.new_password
-                                                                            ? renderError(passwordSettingsFormData.errors.new_password as any)
+                                                                        <Form.Control type="password" {...passwordSettingsFormData.getFieldProps("newPassword")} />
+                                                                        {passwordSettingsFormData.touched.newPassword &&
+                                                                            passwordSettingsFormData.errors.newPassword
+                                                                            ? renderError(passwordSettingsFormData.errors.newPassword as any)
                                                                             : null}
                                                                     </Form.Group>
                                                                     <Form.Group className="form-group mb-3" controlId="formBasicPassword">
