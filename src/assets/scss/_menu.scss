@@ -781,6 +781,8 @@ $vz_body_bg: #1a1d21;
 
             &.active {
                 color: $vz_vertical_menu_item_active_color;
+                background: #f4f4f4;
+                border-radius: 10px;
             }
 
             &:hover {

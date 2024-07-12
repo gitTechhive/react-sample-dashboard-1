@@ -10,11 +10,11 @@ export const GET_LOGIN_DATA_API = "login";
 /** API endpoint for user login */
 export const GET_LOGIN_WITH_MOBILE_NO_DATA_API = "loginPhoneNo";
 /** API endpoint for fetching city data  */
-export const GET_CITY_DATA_API = "city";
+export const GET_CITY_DATA_API = "master/citiesDropdown";
 /** API endpoint for fetching state data */
-export const GET_STATE_DATA_API = "state";
+export const GET_STATE_DATA_API = "master/statesDropdown";
 /**API endpoint for fetching country data  */
-export const GET_COUNTRY_DATA_API = "country";
+export const GET_COUNTRY_DATA_API = "master/countriesDropdown";
 /**API endpoint for fetching country Prefix data  */
 export const GET_COUNTRY_PREFIX_DATA_API = "master/countryCodes";
 /**API endpoint for fetching Captcha data  */
@@ -39,3 +39,10 @@ export const FORGOT_PASSWORD_DATA_API = "forgotPwd";
 export const SIGN_UP_WITH_GOOGLE_DATA_API = "users/singUpGoogle";
 /**API endpoint for Google Sign up data  */
 export const GET_GOOGLE_USERS_DATA_API = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+/**
+* 
+*/
+export const DASHBOARD = "charts";
+export const GET_PROFILE = "users/getUserData"
+export const UPDATE_PROFILE = "users/updateUser"
+export const CHANGE_PASSWORD = "changePwd"

@@ -78,6 +78,32 @@ export const getCountryAPI =
             }
         };
 
+
+export const getCountryCodeAPI =
+    (objBody: any = undefined) =>
+        async (dispatch: AppDispatch) => {
+            /** Dispatch loading action to indicate start of API call */
+            dispatch(loading(true));
+            try {
+                /**Make API call to fetch country data  */
+                const response: any = await get(GET_COUNTRY_DATA_API);
+                /**Check if response doesn't contain error  */
+                if (!response.data.error) {
+                    /**Dispatch success action with fetched data  */
+                    return dispatch(getCountrySuccess(response.data.data));
+                } else {
+                    /**  Dispatch failure action if API returns error */
+                    dispatch(getCountryFailure());
+                }
+            } catch (err) {
+                /**Catch any errors that occur during API call and dispatch failure action  */
+                dispatch(getCountryFailure());
+            } finally {
+                /**Dispatch loading action to indicate end of API call  */
+                dispatch(loading(false));
+            }
+        };
+
 /**
 * Get state data for dropdownn in Add Property form 
 * @param {*} objBody
@@ -87,13 +113,13 @@ export const getCountryAPI =
 */
 
 export const getStateAPI =
-    (objBody: any = undefined) =>
+    (queryParams: any = undefined) =>
         async (dispatch: AppDispatch) => {
             /** Dispatch loading action to indicate start of API call */
             dispatch(loading(true));
             try {
                 /**Make API call to fetch State data  */
-                const response: any = await post(GET_STATE_DATA_API, objBody);
+                const response: any = await get(GET_STATE_DATA_API, queryParams);
                 /**Check if response doesn't contain error  */
 
                 if (!response.data.error) {
@@ -123,13 +149,13 @@ export const getStateAPI =
 */
 
 export const getCityAPI =
-    (objBody: any = undefined) =>
+    (queryParams: any = undefined) =>
         async (dispatch: AppDispatch) => {
             /** Dispatch loading action to indicate start of API call */
             dispatch(loading(true));
             try {
                 /**Make API call to fetch City data  */
-                const response: any = await post(GET_CITY_DATA_API, objBody);
+                const response: any = await get(GET_CITY_DATA_API, queryParams);
                 /**Check if response doesn't contain error  */
                 if (!response.data.error) {
                     /**Dispatch success action with fetched data  */
@@ -217,7 +243,7 @@ export const getRegenerateCaptchaAPI =
             }
         };
 
-        
+
 /**
 * Get Captcha verification Data
 * @param {*} objBody
@@ -227,32 +253,32 @@ export const getRegenerateCaptchaAPI =
 */
 
 export const getVerifyCaptchaAPI =
-(objBody: any = undefined) =>
-    async (dispatch: AppDispatch) => {
-        /** Dispatch loading action to indicate start of API call */
-        dispatch(loading(true));
-        try {
-            /**Make API call to fetch Captcha data  */
-            const response: any = await post(GET_VERIFY_CAPTCHA_DATA_API, objBody);
-            /**Check if response doesn't contain error  */
-            if (!response.data.error) {
-                /**Dispatch success action with fetched data  */
-                return dispatch(getRegenerateCaptchaSuccess(response.data.data));
-            } else {
-                /**  Dispatch failure action if API returns error */
-                dispatch(getRegenerateCaptchaFailure());
+    (objBody: any = undefined) =>
+        async (dispatch: AppDispatch) => {
+            /** Dispatch loading action to indicate start of API call */
+            dispatch(loading(true));
+            try {
+                /**Make API call to fetch Captcha data  */
+                const response: any = await post(GET_VERIFY_CAPTCHA_DATA_API, objBody);
+                /**Check if response doesn't contain error  */
+                if (!response.data.error) {
+                    /**Dispatch success action with fetched data  */
+                    return dispatch(getRegenerateCaptchaSuccess(response.data.data));
+                } else {
+                    /**  Dispatch failure action if API returns error */
+                    dispatch(getRegenerateCaptchaFailure());
+                }
+            } catch (err) {
+                /**Catch any errors that occur during API call and dispatch failure action  */
+                dispatch(getGenerateCaptchaFailure());
+            } finally {
+                /**Dispatch loading action to indicate end of API call  */
+                dispatch(loading(false));
             }
-        } catch (err) {
-            /**Catch any errors that occur during API call and dispatch failure action  */
-            dispatch(getGenerateCaptchaFailure());
-        } finally {
-            /**Dispatch loading action to indicate end of API call  */
-            dispatch(loading(false));
-        }
-    };
+        };
 
 
-    /**
+/**
 *send Email Otp Data
 * @param {*} objBody
 * @method SendOtpDataAPI
@@ -262,26 +288,26 @@ export const getVerifyCaptchaAPI =
 
 
 export const SendOtpDataAPI =
-(url:any,objBody: any = undefined) =>
-    async (dispatch: AppDispatch) => {
-        /** Dispatch loading action to indicate start of API call */
-        dispatch(loading(true));
-        try {
-            /**Make API call to fetch Captcha data  */
-            const response: any = await post(url, objBody);
-            /**Check if response doesn't contain error  */
-            if (!response.data.error) {
-                /**Dispatch success action with fetched data  */
-                return dispatch(SendOtpSuccess(response.data.data));
-            } else {
-                /**  Dispatch failure action if API returns error */
+    (url: any, objBody: any = undefined) =>
+        async (dispatch: AppDispatch) => {
+            /** Dispatch loading action to indicate start of API call */
+            dispatch(loading(true));
+            try {
+                /**Make API call to fetch Captcha data  */
+                const response: any = await post(url, objBody);
+                /**Check if response doesn't contain error  */
+                if (!response.data.error) {
+                    /**Dispatch success action with fetched data  */
+                    return dispatch(SendOtpSuccess(response.data.data));
+                } else {
+                    /**  Dispatch failure action if API returns error */
+                    dispatch(SendOtpFailure());
+                }
+            } catch (err) {
+                /**Catch any errors that occur during API call and dispatch failure action  */
                 dispatch(SendOtpFailure());
+            } finally {
+                /**Dispatch loading action to indicate end of API call  */
+                dispatch(loading(false));
             }
-        } catch (err) {
-            /**Catch any errors that occur during API call and dispatch failure action  */
-            dispatch(SendOtpFailure());
-        } finally {
-            /**Dispatch loading action to indicate end of API call  */
-            dispatch(loading(false));
-        }
-    };
+        };

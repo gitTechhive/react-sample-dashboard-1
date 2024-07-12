@@ -336,7 +336,7 @@ const Login = (props) => {
                     if (response) {
                         if (!isNullUndefinedOrBlank(response.payload.token)) {
                             navigateToRelatedScreen(ENUMFORROUTES.DASHBOARD);
-                            setToken(response?.payload?.token);
+
                         }
                     }
                 }
