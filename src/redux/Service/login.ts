@@ -15,6 +15,7 @@ import {
 // import { LOGIN_API } from "../../Utility/ApiList";
 import { post } from "../../Utility/httpInterceptor";
 import { GET_LOGIN_DATA_API, GET_LOGIN_WITH_MOBILE_NO_DATA_API } from "../../Utility/ApiList";
+import { setToken } from "../../Utility/Helper";
 
 
 /**
@@ -35,13 +36,14 @@ export const loginToSystem =
           ts(response.data.message);
 
           // localStorage.setItem("email", objBody.email);
-        //   localStorage.setItem("email", user.email);
-        //   localStorage.setItem("token", user.token);
-        //   localStorage.setItem("name", user.first_name + ' ' + user.last_name );
-        //   localStorage.setItem("mobile_no", user.mobile_no);
-        //   localStorage.setItem("userId", user.userId);
-        //   localStorage.setItem("profile_Url", user.profile_pic_url);
-          return dispatch(getLoginSuccess( response.data.data));
+          //   localStorage.setItem("email", user.email);
+          //   localStorage.setItem("token", user.token);
+          //   localStorage.setItem("name", user.first_name + ' ' + user.last_name );
+          //   localStorage.setItem("mobile_no", user.mobile_no);
+          //   localStorage.setItem("userId", user.userId);
+          //   localStorage.setItem("profile_Url", user.profile_pic_url);
+          setToken(response?.data.data?.token);
+          return dispatch(getLoginSuccess(response.data.data));
 
         } else {
 
@@ -58,7 +60,7 @@ export const loginToSystem =
 
 
 
-    
+
 /**
  * Login
  * @param {*} objBody
@@ -67,61 +69,61 @@ export const loginToSystem =
  * @returns API will return login token and redirect to dashboard
  */
 export const loginWithMobileNoToSystem =
-(objBody: any = undefined) =>
-  async (dispatch: AppDispatch) => {
-    dispatch(loading(true));
-    try {
-      const response: any = await post(GET_LOGIN_WITH_MOBILE_NO_DATA_API, objBody)
-      if (response.data) {
-        const user: any = response.data.data;
-        ts(response.data.message);
+  (objBody: any = undefined) =>
+    async (dispatch: AppDispatch) => {
+      dispatch(loading(true));
+      try {
+        const response: any = await post(GET_LOGIN_WITH_MOBILE_NO_DATA_API, objBody)
+        if (response.data) {
+          const user: any = response.data.data;
+          ts(response.data.message);
 
-        // localStorage.setItem("email", objBody.email);
-      //   localStorage.setItem("email", user.email);
-      //   localStorage.setItem("token", user.token);
-      //   localStorage.setItem("name", user.first_name + ' ' + user.last_name );
-      //   localStorage.setItem("mobile_no", user.mobile_no);
-      //   localStorage.setItem("userId", user.userId);
-      //   localStorage.setItem("profile_Url", user.profile_pic_url);
-        return dispatch(getLoginWithMobileNoSuccess( response.data.data));
+          // localStorage.setItem("email", objBody.email);
+          //   localStorage.setItem("email", user.email);
+          //   localStorage.setItem("token", user.token);
+          //   localStorage.setItem("name", user.first_name + ' ' + user.last_name );
+          //   localStorage.setItem("mobile_no", user.mobile_no);
+          //   localStorage.setItem("userId", user.userId);
+          //   localStorage.setItem("profile_Url", user.profile_pic_url);
+          return dispatch(getLoginWithMobileNoSuccess(response.data.data));
 
-      } else {
+        } else {
 
-        te('Login Failed!');
+          te('Login Failed!');
+          dispatch(getLoginWithMobileNoFailure());
+        }
+      } catch (err) {
+        console.log(err, "error")
         dispatch(getLoginWithMobileNoFailure());
+      } finally {
+        dispatch(loading(false));
       }
-    } catch (err) {
-      console.log(err, "error")
-      dispatch(getLoginWithMobileNoFailure());
-    } finally {
-      dispatch(loading(false));
-    }
-  };
+    };
 
-// /**
-//  * Logout
-//  * @param {*} objBody
-//  * @method logoutFromSystem
-//  * @url /login/logout
-//  * @returns API will logout user from system
-//  */
-// export const logoutFromSystem =
-//   (objBody: any = undefined) =>
-//     async (dispatch: AppDispatch) => {
-//       console.log("logourt")
-//       dispatch(loading(true));
-//       try {
+/**
+ * Logout
+ * @param {*} objBody
+ * @method logoutFromSystem
+ * @url /login/logout
+ * @returns API will logout user from system
+ */
+export const logoutFromSystem =
+  (objBody: any = undefined) =>
+    async (dispatch: AppDispatch) => {
+      console.log("logourt")
+      dispatch(loading(true));
+      try {
 
-//         localStorage.clear();
+        localStorage.clear();
 
-//         ts('Logged Out successfully!');
-//         dispatch(getLogoutSuccess('true'));
-//       } catch (err) {
-//         dispatch(getLogoutFailure());
-//       } finally {
-//         dispatch(loading(false));
-//       }
-//     };
+        ts('Logged Out successfully!');
+        dispatch(getLogoutSuccess('true'));
+      } catch (err) {
+        dispatch(getLogoutFailure());
+      } finally {
+        dispatch(loading(false));
+      }
+    };
 
 // export const resetLoginState =
 //   (objBody: any = {}) =>

@@ -240,4 +240,35 @@ export interface ForgotPasswordData {
 
 }
 
+/**
+ * Forgot Password data interface.
+ */
+export interface UserDataInterface {
 
+  firstName: string,
+  lastName: string,
+  address: string,
+  pinCode?: string,
+  mobileNo: string,
+  bio?: string,
+  email: string,
+  phonecode?: string,
+  country_id?: string,
+  state_id?: string,
+  cities_id?: string,
+  original_name?: string,
+  profilePicUrl?: string,
+  country?: string,
+  state?: string,
+  cities?: string,
+  profilePic?: any
+
+}
+
+
+export const SUPPORTED_FORMATS = [
+  "image/jpg",
+  "image/jpeg",
+  "image/gif",
+  "image/png",
+];

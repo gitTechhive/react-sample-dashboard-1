@@ -1,0 +1,8 @@
+export const FIRST_NAME_IS_REQUIRED = "First Name is Required"
+export const LAST_NAME_IS_REQUIRED = "Last Name is Required"
+export const ADDRESS_IS_REQUIRED = "Address is Required"
+export const COUNTRY_CODE_IS_REQUIRED = "Country Code is Required"
+export const EMAIL_IS_REQUIRED = "Email is Required"
+export const MOBILE_NO_IS_REQUIRED = "Mobile is Required"
+export const PLEASE_ADD_VALID_MOBILE_NO = "Please add Valid Mobile Numbers"
+export const PLEASE_ADD_VALID_EMAIL = "Please add Valid Email"

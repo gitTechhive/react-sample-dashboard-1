@@ -27,12 +27,6 @@ const privateRoutes: RouterProps[] = [
     url: ENUMFORROUTES.DASHBOARD,
   },
   {
-    path: ENUMFORROUTES.DASHBOARD,
-    component: <Dashboard />,
-    caseSensitive: true,
-    url: ENUMFORROUTES.DASHBOARD,
-  },
-  {
     path: ENUMFORROUTES.SETTINGS,
     component: <Settings />,
     caseSensitive: true,
@@ -80,6 +74,10 @@ const publicRoutes: RouterProps[] = [
 const AppRouter = (props): JSX.Element => {
   /** Check if the user is authenticated  */
   const isAuthenticated = getToken() !== null ? true : false;
+
+
+  // console.log(isAuthenticated)
+  // console.log(isAuthenticated)
   /** State to manage private route list */
   const [privateRouteList, setPrivateRouteList] = useState<RouterProps[]>([]);
   //roles and Righs Start
@@ -245,18 +243,17 @@ const AppRouter = (props): JSX.Element => {
   // )
   // role sight end
 
-
   return (
 
     <div className={isAuthenticated ? 'layout-wrapper' : ''} id={isAuthenticated ? "layout-wrapper" : ''}>
       <Router>
-        {isAuthenticated && (
+        {isAuthenticated &&
           <Navbar />
-        )}
+        }
 
-        {isAuthenticated && (
+        {isAuthenticated &&
           <Sidebar />
-        )}
+        }
         <div className={isAuthenticated ? 'main-content' : ''}>
           <React.Suspense
             fallback={<div className="lazy-loading">Loading...</div>}

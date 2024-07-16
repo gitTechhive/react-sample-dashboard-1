@@ -6,13 +6,17 @@ import genericReducer from "./generic/generic.reducer";
 import loaderReducer from "./Loader/loader.reducer";
 import SignUpReducer from "./SignUp/signUp.reducer";
 import ForgotPasswordReducer from "./forgotPassword/forgotPassword.reducer";
+import DashboardReducer from "./Dashboard/dashboard.reducer";
+import settingReducer from "./Settings/settings.reducer";
 /**Combining multiple reducers into a single root reducer  */
 const rootReducer = combineReducers({
 
     genericReducer,
     loaderReducer,
     SignUpReducer,
-    ForgotPasswordReducer
+    ForgotPasswordReducer,
+    DashboardReducer,
+    settingReducer
 
 })
 /** Defining types for better type safety */

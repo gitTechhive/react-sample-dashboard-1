@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 /**Importing API and base URLs from a configuration file  */
-import { API_URL, BASE_URL } from "./Config"; 
+import { API_URL, BASE_URL } from "./Config";
 import {
     getServerValidation,
     getToken,
@@ -89,6 +89,7 @@ let count: any = 1;
  */
 export const get = (
     url: string,
+    queryParams?: string
     // headers: any,
     // isPrivate = true,
     // responseType = undefined,
@@ -113,7 +114,7 @@ export const get = (
     const axiosObj: AxiosRequestConfig = {
         method: "get",
         url: apiUrl,
-
+        params: queryParams
     };
     /** Add headers to the request if needed  */
 
@@ -601,10 +602,10 @@ export const deleteAPI = (
     uat = false
 ): Promise<AxiosResponse> => {
     /**  Construct the API URL based on the uat flag  */
-  
+
     const apiUrl = !uat ? API_URL + url : url;
     /** Check if the request includes media files  */
-   
+
     if (mediaFile === true) {
         /**If mediaFile is true, create a FormData object for the body  */
         const formData = new FormData();
@@ -615,7 +616,7 @@ export const deleteAPI = (
         bodyObj = formData;
     }
     /**Define the headers for the request, including the Authorization token if required  */
-   
+
     let header: any = {};
     if (excludeTokenAPIList.indexOf(url) < 0) {
         header = {
@@ -624,7 +625,7 @@ export const deleteAPI = (
         };
     }
     /** Perform the DELETE request using axiosInstance */
- 
+
     return axiosInstance
         .delete(apiUrl, {
             headers: header,
