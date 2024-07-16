@@ -29,11 +29,18 @@ const Navbar = (props) => {
   };
 
   const [profileUrl, setProfileUrl] = useState<string>(getProfileId() as any)
+  const [name, setName] = useState<string>(getName() as any)
   useEffect(() => {
-    setProfileUrl(props?.profile?.profilePicUrl)
+    if (!isNullUndefinedOrBlank(props.profile)) {
+      setProfileUrl(props?.profile?.profilePicUrl)
+      setName(`${props?.profile?.firstName} ${props?.profile?.lastName}`)
+    } else {
+      setProfileUrl(getProfileId() as any)
+      setName(getName() as any)
+    }
     // console.log(profileUrl)
   }, [props.profile]);
-  console.log(props?.profile)
+  // console.log(props?.profile)
   return (
 
 
@@ -145,14 +152,14 @@ const Navbar = (props) => {
                   <img className="rounded-circle header-profile-user"
                     src={!isNullUndefinedOrBlank(profileUrl) ? profileUrl : defaultAvatar3} alt="Header Avatar" />
                   <span className="text-start ms-xl-2">
-                    <span className="d-none d-xl-inline-block ms-1  user-name-text">{!isNullUndefinedOrBlank(getName()) ? getName() : "-"}</span>
+                    <span className="d-none d-xl-inline-block ms-1  user-name-text">{!isNullUndefinedOrBlank(name) ? name : getName()}</span>
                     <span className="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
                   </span>
                 </span>
               </button>
               <div className="dropdown-menu dropdown-menu-end">
                 {/* <!-- item--> */}
-                <h6 className="dropdown-header">Welcome {!isNullUndefinedOrBlank(getName()) ? getName() : "-"}!</h6>
+                <h6 className="dropdown-header">Welcome {!isNullUndefinedOrBlank(name) ? name : getName()}!</h6>
                 <a className="dropdown-item" ><i
                   className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                     className="align-middle" onClick={() => { naviagate(ENUMFORROUTES.SETTINGS) }}>Profile</span></a>

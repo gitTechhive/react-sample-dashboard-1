@@ -12,8 +12,9 @@ import { dashBoardAPI } from '../../../redux/Service/dashboard';
 import { connect } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import Chart from 'react-apexcharts';
-import { isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank } from '../../../Utility/Helper';
+import { getName, isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank } from '../../../Utility/Helper';
 import { json } from 'stream/consumers';
+
 import ReactApexChart from 'react-apexcharts';
 /**
  * Dashboard Component
@@ -22,18 +23,16 @@ import ReactApexChart from 'react-apexcharts';
 
 const Dashboard = (props) => {
   const navigate = useNavigate();
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
   const [data, setData] = useState<any>(null);
-
   const getData = async () => {
     let data = await props?.dashBoardAPI();
     // console.log(data)
 
     if (!isNullUndefinedOrBlank(data) && !isEmptyObjectOrNullUndefiend(data.payload)) {
-      data?.payload.map((key, index) => {
+      data?.payload?.chartData?.map((key, index) => {
         key.value = JSON.parse(key.value)
-        console.log(key.value)
-
+        // console.log(key.value)
       })
       setData(data.payload);
     }
@@ -46,116 +45,19 @@ const Dashboard = (props) => {
   useEffect(() => {
     getData()
   }, [])
-  const series = [{
-    name: "Product A",
-    data: [44, 55, 41, 67, 22, 43, 10]
-  },
-  {
-    name: "Product B",
-    data: [13, 23, 20, 8, 13, 27, 10]
-  },
-  {
-    name: "Product C",
-    data: [11, 17, 15, 15, 21, 14, 10]
-  },
-  {
-    name: "Product D",
-    data: [21, 7, 25, 13, 22, 8, 10]
-  }]
-
-
-  const options = {
-    chart: {
-      type: 'bar',
-      height: 350,
-      stacked: true,
-      toolbar: {
-        show: false
-      },
-      zoom: {
-        enabled: true
-      },
-      fontFamily: "Rubik",
-      width: 700
-    },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'bottom',
-            offsetX: -10,
-            offsetY: 0
-          }
-        }
-      }
-    ],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        borderRadius: 10,
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'last',
-        dataLabels: {
-          total: {
-            enabled: true,
-            style: {
-              fontSize: '13px',
-              fontWeight: 900
-            }
-          }
-        }
-      }
-    },
-    xaxis: {
-      type: 'category',
-      categories: [
-        "Dec 01",
-        "Dec 02",
-        "Dec 03",
-        "Dec 04",
-        "Dec 05",
-        "Dec 06",
-        "Dec 07"
-      ]
-    },
-    legend: {
-      position: 'right',
-      offsetY: 40
-    },
-    fill: {
-      opacity: 1,
-      colors: [
-        "#2A85FF",
-        "#83BF6E",
-        "#FFA114",
-        "#FF6A55"
-      ]
-    },
-    dataLabels: {
-      style: {
-        colors: [
-          "#2A85FF",
-          "#83BF6E",
-          "#FFA114",
-          "#FF6A55"
-        ]
-      }
-    }
-  }
 
   return (
     <>
       <div className="page-content">
         <div className="dashboard-welcome">
           <div className="dashboard-welcome-left">
-            <h6>Good Morning, admin v2 Test!</h6>
+            <h6>Good Morning, {!isNullUndefinedOrBlank(getName()) && getName()}!</h6>
             <p>Here's what's happening with your store today.</p>
           </div>
           <div className="dashboard-welcome-right">
             <div className="date-filter">
               <div className="form-group header-input mb-0">
-                <DatePicker className="form-control form-control-sm" selected={startDate} onChange={(date) => setStartDate(date)} />
+                {/* <DatePicker className="form-control form-control-sm" selected={startDate} onChange={(date) => setStartDate(date)} placeholder={<div>Select Date</div>}  /> */}
               </div>
               <Button variant='white' size='sm' className='btn-icon-start'><i className='bi bi-funnel'></i> Filters</Button>
             </div>
@@ -174,9 +76,9 @@ const Dashboard = (props) => {
                   </div>
                   <div className="card-details-container">
                     <div className="card-details-number">
-                      <h4>2,420
+                      <h4>{!isNullUndefinedOrBlank(data?.totalCustomer) ? data?.totalCustomer : 0}
 
-                        <span className='text-success'>40%
+                        <span className='text-success'>{!isNullUndefinedOrBlank(data?.totalCustomerPer) ? data?.totalCustomerPer : 0}%
 
                           <i className='bi bi-arrow-up-right ms-1'></i>
                         </span>
@@ -201,9 +103,9 @@ const Dashboard = (props) => {
                   </div>
                   <div className="card-details-container">
                     <div className="card-details-number">
-                      <h4>2,420
+                      <h4>{!isNullUndefinedOrBlank(data?.totalMember) ? data?.totalMember : 0}
 
-                        <span className='text-success'>40%
+                        <span className='text-success'>{!isNullUndefinedOrBlank(data?.totalMemberPer) ? data?.totalMemberPer : 0}%
 
                           <i className='bi bi-arrow-up-right ms-1'></i>
                         </span>
@@ -227,9 +129,9 @@ const Dashboard = (props) => {
                   </div>
                   <div className="card-details-container">
                     <div className="card-details-number">
-                      <h4>2,420
+                      <h4>{!isNullUndefinedOrBlank(data?.activeNow) ? data?.activeNow : 0}
 
-                        <span className='text-success'>40%
+                        <span className='text-success'>{!isNullUndefinedOrBlank(data?.activeNowPer) ? data?.activeNowPer : 0}%
 
                           <i className='bi bi-arrow-up-right ms-1'></i>
                         </span>
@@ -254,9 +156,9 @@ const Dashboard = (props) => {
                   </div>
                   <div className="card-details-container">
                     <div className="card-details-number">
-                      <h4>$45k
+                      <h4>${!isNullUndefinedOrBlank(data?.myBalance) ? data?.myBalance : 0}
 
-                        <span className='text-success'>40%
+                        <span className='text-success'>{!isNullUndefinedOrBlank(data?.myBalancePer) ? data?.myBalancePer : 0}%
 
                           <i className='bi bi-arrow-up-right ms-1'></i>
                         </span>
@@ -292,7 +194,13 @@ const Dashboard = (props) => {
                   <div className="dashboard-chart-container">
                     {
                       !isNullUndefinedOrBlank(data) ?
-                        <Chart options={data[0]?.value?.chart} series={data[0]?.value?.series} type="area" height={350} />
+                        <Chart options={{
+                          ...data?.chartData[0].value.chart,
+                          chart: data?.chartData[0].value.chart,
+                          xaxis: data?.chartData[0].value.xaxis,
+                          stroke: data?.chartData[0].value.stroke,
+                          dataLabels: data?.chartData[0].value.dataLabels,
+                        }} series={data?.chartData[0]?.value?.series} type="area" height={350} />
                         :
                         <></>
                     }
@@ -302,7 +210,7 @@ const Dashboard = (props) => {
 
               <div className="card card-ribbon card-dashboard-chart card-dashboard-left1 card-flex-layout">
                 <div className="card-header">
-                  <h4>Traffic Channel</h4>
+                  <h4>Sales of Devices</h4>
                   <div className="card-header-right">
                     <Dropdown>
                       <Dropdown.Toggle size="sm" variant="white" id="dropdown-basic">
@@ -323,17 +231,17 @@ const Dashboard = (props) => {
                       !isNullUndefinedOrBlank(data) ?
                         <Chart
                           options={{
-                            ...data[1].value.chart,
-                            chart: data[1].value.chart,
-                            dataLabels: data[1].value.dataLabels,
-                            fill: data[1].value.fill,
-                            legend: data[1].value.legend,
-                            plotOptions: data[1].value.plotOptions,
-                            responsive: data[1].value.responsive,
-                            xaxis: data[1].value.xaxis
+                            ...data?.chartData[1].value.chart,
+                            chart: data?.chartData[1].value.chart,
+                            dataLabels: data?.chartData[1].value.dataLabels,
+                            fill: data?.chartData[1].value.fill,
+                            legend: data?.chartData[1].value.legend,
+                            plotOptions: data?.chartData[1].value.plotOptions,
+                            responsive: data?.chartData[1].value.responsive,
+                            xaxis: data?.chartData[1].value.xaxis
                           }}
-                          stacked={true}
-                          series={data[1].value.series}
+
+                          series={data?.chartData[1].value.series}
                           type="bar"
                           height={350}
                         />
@@ -346,7 +254,7 @@ const Dashboard = (props) => {
 
               <div className="card card-ribbon card-dashboard-chart card-dashboard-left1 card-flex-layout">
                 <div className="card-header">
-                  <h4>Top Country</h4>
+                  <h4>New Customer</h4>
                   <div className="card-header-right">
                     <Dropdown>
                       <Dropdown.Toggle size="sm" variant="white" id="dropdown-basic">
@@ -367,13 +275,13 @@ const Dashboard = (props) => {
                       !isNullUndefinedOrBlank(data) ?
                         <Chart
                           options={{
-                            ...data[4].value.chart,
-                            chart: data[4].value.chart,
-                            dataLabels: data[4].value.dataLabels,
-                            fill: data[4].value.fill,
-
+                            ...data?.chartData[4].value.chart,
+                            chart: data?.chartData[4].value.chart,
+                            dataLabels: data?.chartData[4].value.dataLabels,
+                            fill: data?.chartData[4].value.fill,
+                            xaxis: data?.chartData[4].value.xaxis
                           }}
-                          series={data[4].value.series}
+                          series={data?.chartData[4].value.series}
                           type="bar"
                           height={350}
                         />
@@ -408,7 +316,7 @@ const Dashboard = (props) => {
                         <Chart
                           options={{
                             ...data[2].value.chart,
-                            chart: data[2].value.chart,
+                            chart:data?.chartData[2].value.chart,
                             dataLabels: data[2].value.dataLabels,
                             fill: data[2].value.fill,
                             legend: data[2].value.legend,
@@ -440,15 +348,15 @@ const Dashboard = (props) => {
                       !isNullUndefinedOrBlank(data) ?
                         <Chart
                           options={{
-                            ...data[3].value.chart,
-                            chart: data[3].value.chart,
-                            dataLabels: data[3].value.dataLabels,
-                            fill: data[3].value.fill,
-                            labels: data[3].value.labels,
-                            responsive: data[3].value.responsive,
+                            ...data?.chartData[3].value.chart,
+                            chart: data?.chartData[3].value.chart,
+                            dataLabels: data?.chartData[3].value.dataLabels,
+                            fill: data?.chartData[3].value.fill,
+                            labels: data?.chartData[3].value.labels,
+                            responsive: data?.chartData[3].value.responsive,
 
                           }}
-                          series={data[3].value.series}
+                          series={data?.chartData[3].value.series}
                           type="donut"
                           height={350}
                         />
@@ -472,16 +380,16 @@ const Dashboard = (props) => {
                       !isNullUndefinedOrBlank(data) ?
                         <Chart
                           options={{
-                            ...data[2].value.chart,
-                            chart: data[2].value.chart,
-                            dataLabels: data[2].value.dataLabels,
-                            // fill: data[2].value.fill,
-                            // legend: data[2].value.legend,
-                            plotOptions: data[2].value.plotOptions,
-                            // responsive: data[2].value.responsive,
-                            xaxis: data[2].value.xaxis
+                            ...data?.chartData[2].value.chart,
+                            chart: data?.chartData[2].value.chart,
+                            dataLabels: data?.chartData[2].value.dataLabels,
+                            // fill:data?.chartData[2].value.fill,
+                            // legend:data?.chartData[2].value.legend,
+                            plotOptions: data?.chartData[2].value.plotOptions,
+                            // responsive:data?.chartData[2].value.responsive,
+                            xaxis: data?.chartData[2].value.xaxis
                           }}
-                          series={data[2].value.series}
+                          series={data?.chartData[2].value.series}
                           type="bar"
                           height={350}
                         />
@@ -502,16 +410,17 @@ const Dashboard = (props) => {
                       !isNullUndefinedOrBlank(data) ?
                         <Chart
                           options={{
-                            ...data[3].value.chart,
-                            chart: data[3].value.chart,
-                            dataLabels: data[3].value.dataLabels,
-                            fill: data[3].value.fill,
-                            labels: data[3].value.labels,
-                            responsive: data[3].value.responsive,
+                            ...data?.chartData[3]?.value.chart,
+                            chart: data?.chartData[3]?.value.chart,
+                            dataLabels: data?.chartData[3]?.value.dataLabels,
+                            fill: data?.chartData[3].value?.fill,
+                            labels: data?.chartData[3]?.value.labels,
+                            responsive: data?.chartData[3]?.value.responsive,
+
 
                           }}
-                          series={data[3].value.series}
-                          type="donut"
+                          series={data?.chartData[3]?.value.series}
+                          type="pie"
                           height={350}
                         />
                         :
