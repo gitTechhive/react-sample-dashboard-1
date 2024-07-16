@@ -8,7 +8,7 @@ import { DropdownListFormat, UserDataInterface } from '../../../interfaces/inter
 import * as yup from 'yup';
 import { FormikTouched, FormikValues, setNestedObjectValues, useFormik } from 'formik';
 import { isEmptyObjectOrNullUndefiend, isNullUndefinedOrBlank, renderError, SUPPORTED_FORMATS } from '../../../Utility/Helper';
-import { ADDRESS_IS_REQUIRED, EMAIL_IS_REQUIRED, FIRST_NAME_IS_REQUIRED, LAST_NAME_IS_REQUIRED, MOBILE_NO_IS_REQUIRED, PLEASE_ADD_VALID_EMAIL, PLEASE_ADD_VALID_MOBILE_NO } from '../../../Utility/Validation_Message';
+import { ADDRESS_IS_REQUIRED, EMAIL_IS_REQUIRED, FIRST_NAME_IS_REQUIRED, LAST_NAME_IS_REQUIRED, MOBILE_NO_IS_REQUIRED, PLEASE_ADD_VALID_EMAIL, PLEASE_ADD_VALID_MOBILE_NO, PLEASE_SELECT_COUNTRY_CODE } from '../../../Utility/Validation_Message';
 import { CONFIRM_PASSWORD_NOT_MATCHED, ONLY_NUMBERS, PASSWORD_INVALID, PATTERN_EMAIL, PATTERN_FOR_PASSWORD_NEW } from '../../../Utility/Validation_Helper';
 import { te } from '../../../Utility/Toaster';
 import { RootState } from '../../../redux/store';
@@ -52,9 +52,8 @@ const Settings = (props) => {
         cities_id: "",
         original_name: "",
         profilePicUrl: "",
-        country: "",
-        state: "",
-        cities: ""
+        profilePic: null
+
     }
     const onSubmitUploadFile = (values) => {
     }
@@ -64,7 +63,8 @@ const Settings = (props) => {
         lastName: yup.string().trim().required(LAST_NAME_IS_REQUIRED),
         address: yup.string().trim().required(ADDRESS_IS_REQUIRED),
         pinCode: yup.string().trim().nullable(),
-        mobileNo: yup.string().trim().matches(ONLY_NUMBERS, PLEASE_ADD_VALID_MOBILE_NO).required(MOBILE_NO_IS_REQUIRED),
+        phonecode: yup.string().trim().required(PLEASE_SELECT_COUNTRY_CODE).nullable(),
+        mobileNo: yup.string().trim().matches(ONLY_NUMBERS, PLEASE_ADD_VALID_MOBILE_NO).required(MOBILE_NO_IS_REQUIRED).nullable(),
         bio: yup.string().trim().nullable(),
         email: yup.string().trim().matches(PATTERN_EMAIL, PLEASE_ADD_VALID_EMAIL).required(EMAIL_IS_REQUIRED),
         profilePic: yup.mixed().nullable().notRequired()
@@ -75,13 +75,14 @@ const Settings = (props) => {
                 }
                 // console.log(value)
                 const fileType = value[0].type;
-                console.log(fileType); // Log the file type for debugging
+                // console.log(fileType); // Log the file type for debugging
                 if (!SUPPORTED_FORMATS.includes(fileType)) {
                     return this.createError({ message: "Only upload Image file" });
                 }
                 return true;
             }),
-        profilePicUrl: yup.string().nullable()
+        profilePicUrl: yup.string().nullable(),
+
 
 
 
@@ -104,14 +105,14 @@ const Settings = (props) => {
                 setNestedObjectValues<
                     FormikTouched<FormikValues>
                 >(userProfileError, true))
-            te("Please Upload File");
+            // te("Please Upload File");
             return;
 
         }
 
         const reqBody: any = new FormData();
 
-        console.log(userProfileForm.values.profilePic)
+        // console.log(userProfileForm.values.profilePic)
         if (!isEmptyObjectOrNullUndefiend(userProfileForm.values.profilePic) && typeof userProfileForm.values.profilePic === "object") {
             reqBody.append("profilePic", userProfileForm?.values?.profilePic[0]);
         }
@@ -218,12 +219,12 @@ const Settings = (props) => {
             setSavedFormData({ ...props.profileData });
             // console.log(props.profileData)
             if (!isNullUndefinedOrBlank(props.profileData.profilePicUrl)) {
-                console.log("hello")
+
                 userProfileForm.setFieldValue("profilePicUrl", props.profileData.profilePicUrl);
                 localStorage.setItem("profile_Url", (props.profileData.profilePicUrl));
             }
             else {
-                console.log("hello2")
+
                 userProfileForm.setFieldValue("profilePicUrl", "");
                 localStorage.removeItem("profile_Url");
             }
@@ -310,6 +311,7 @@ const Settings = (props) => {
             passwordSettingsFormData.resetForm();
         }
     }
+    // console.log(userProfileForm.values)
     return (
         <>
             <div className="page-content">
@@ -428,7 +430,7 @@ const Settings = (props) => {
                                                                                 userProfileForm.setFieldValue("phonecode", selectedOption?.value);
 
                                                                             }}
-                                                                            placeholder={<div>Select Country </div>}
+                                                                            placeholder={<div>Select Country Code</div>}
                                                                             isClearable={true}
                                                                             value={countryPhoneCodeDropDownData?.filter(({ value }) => {
                                                                                 return (
@@ -439,6 +441,10 @@ const Settings = (props) => {
                                                                             menuPosition="fixed"
                                                                             className="react-select-container"
                                                                         />
+                                                                        {userProfileForm.touched.phonecode &&
+                                                                            userProfileForm.errors.phonecode
+                                                                            ? renderError(userProfileForm.errors.phonecode as any)
+                                                                            : null}
                                                                     </Form.Group>
                                                                 </Col>
                                                                 <Col md={6}>
@@ -447,7 +453,7 @@ const Settings = (props) => {
                                                                         <Form.Control type="text" placeholder="Enter phone no." {...userProfileForm.getFieldProps("mobileNo")} />
                                                                         {userProfileForm.touched.mobileNo &&
                                                                             userProfileForm.errors.mobileNo
-                                                                            ? renderError(userProfileForm.errors.mobileNo)
+                                                                            ? renderError(userProfileForm.errors.mobileNo as any)
                                                                             : null}
                                                                     </Form.Group>
                                                                 </Col>
@@ -461,7 +467,7 @@ const Settings = (props) => {
                                                                             : null}
                                                                     </Form.Group>
                                                                 </Col>
-                                                                <Col md={12}>
+                                                                {/* <Col md={12}>
                                                                     <Form.Group className="form-group mb-3" controlId="formPhoneNo">
                                                                         <Form.Label>Address Line</Form.Label>
                                                                         <Form.Control type="text" placeholder="Enter address" {...userProfileForm.getFieldProps("address")} />
@@ -470,7 +476,7 @@ const Settings = (props) => {
                                                                             ? renderError(userProfileForm.errors.address)
                                                                             : null}
                                                                     </Form.Group>
-                                                                </Col>
+                                                                </Col> */}
 
 
                                                                 <Col md={6}>
@@ -567,24 +573,24 @@ const Settings = (props) => {
                                                                     </Form.Group>
                                                                 </Col>
                                                                 <Col md={6}>
-                                                                    <Form.Group className="form-group mb-3" controlId="formPhoneNo">
+                                                                    {/* <Form.Group className="form-group mb-3" controlId="formPhoneNo">
                                                                         <Form.Label>Zip Code</Form.Label>
                                                                         <Form.Control type="text" placeholder="Enter zip code" {...userProfileForm.getFieldProps("pinCode")} />
                                                                         {userProfileForm.touched.pinCode &&
                                                                             userProfileForm.errors.pinCode
                                                                             ? renderError(userProfileForm.errors.pinCode)
                                                                             : null}
-                                                                    </Form.Group>
+                                                                    </Form.Group> */}
                                                                 </Col>
                                                                 <Col md={12}>
-                                                                    <Form.Group className="form-group mb-3" controlId="formPhoneNo">
+                                                                    {/* <Form.Group className="form-group mb-3" controlId="formPhoneNo">
                                                                         <Form.Label>Bio </Form.Label>
                                                                         <Form.Control as="textarea" rows={3} {...userProfileForm.getFieldProps("bio")} />
                                                                         {userProfileForm.touched.bio &&
                                                                             userProfileForm.errors.bio
                                                                             ? renderError(userProfileForm.errors.bio)
                                                                             : null}
-                                                                    </Form.Group>
+                                                                    </Form.Group> */}
                                                                 </Col>
                                                             </Row>
 
