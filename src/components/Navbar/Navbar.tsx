@@ -34,13 +34,15 @@ const Navbar = (props) => {
     if (!isNullUndefinedOrBlank(props.profile)) {
       setProfileUrl(props?.profile?.profilePicUrl)
       setName(`${props?.profile?.firstName} ${props?.profile?.lastName}`)
-    } else {
+    }
+
+    return () => {
       setProfileUrl(getProfileId() as any)
       setName(getName() as any)
-    }
-    // console.log(profileUrl)
+    };
+
   }, [props.profile]);
-  // console.log(props?.profile)
+
   return (
 
 
@@ -79,7 +81,7 @@ const Navbar = (props) => {
             </button>
 
             {/* <!-- App Search--> */}
-            <form className="app-search d-none d-md-block">
+            {/* <form className="app-search d-none d-md-block">
               <div className="position-relative">
                 <Form.Control
                   type="text"
@@ -93,7 +95,7 @@ const Navbar = (props) => {
                   id="search-close-options"></span>
               </div>
 
-            </form>
+            </form> */}
           </div>
 
           <div className="d-flex align-items-center">

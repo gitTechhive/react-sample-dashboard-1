@@ -91,7 +91,7 @@ const Signup = (props) => {
  * @param values User details form values.
  */
     const onSubmitUserDetails = (values) => {
-        // console.log(values);
+
 
     }
     /**
@@ -196,7 +196,7 @@ const Signup = (props) => {
             hiddenCaptcha: newData.hiddenCaptcha,
         }
         const response = await props.getVerifyCaptchaAPI(reqBody);
-        console.log(response);
+
         if (response) {
 
             return true;
@@ -231,7 +231,7 @@ const Signup = (props) => {
                 setNestedObjectValues<
                     FormikTouched<FormikValues>
                 >(userDetailsErrors, true));
-            console.log(userDetailsErrors, "errors");
+
             return;
         }
         const reqBody = { ...userDetailsFormData.values }

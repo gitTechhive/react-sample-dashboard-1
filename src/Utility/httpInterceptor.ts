@@ -420,7 +420,7 @@ export const downloadFileAPI = (url: string, fileName: any): Promise<any> => {
                 /**  Extract the suggested file name from the response headers */
 
                 const fileNameHeader = 'content-disposition';
-                console.log(response.headers[fileNameHeader], "response ");
+                // console.log(response.headers[fileNameHeader], "response ");
                 const suggestedFileName = response.headers[fileNameHeader].split('filename=')[1];
                 /** Set the effective file name considering the suggested file name  */
 

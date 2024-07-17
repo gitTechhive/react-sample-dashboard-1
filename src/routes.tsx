@@ -76,8 +76,7 @@ const AppRouter = (props): JSX.Element => {
   const isAuthenticated = getToken() !== null ? true : false;
 
 
-  // console.log(isAuthenticated)
-  // console.log(isAuthenticated)
+
   /** State to manage private route list */
   const [privateRouteList, setPrivateRouteList] = useState<RouterProps[]>([]);
   //roles and Righs Start
@@ -98,7 +97,7 @@ const AppRouter = (props): JSX.Element => {
   // let token: any = localStorage.getItem("token");
 
   //  const decode: any = jwtDecode(token);
-  //  console.log(decode,"decode value");
+
   //   const decode: any =[ENUMFORROUTES.DASHBOARD,ENUMFORROUTES.REPORTS]
   //   const newPageData = [...decode];
 

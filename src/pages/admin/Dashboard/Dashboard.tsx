@@ -22,21 +22,25 @@ import ReactApexChart from 'react-apexcharts';
  */
 
 const Dashboard = (props) => {
-  const navigate = useNavigate();
-  const [startDate, setStartDate] = useState();
+  /**
+   * State variable to hold dashboard data.
+   * @type {any | null}
+   */
   const [data, setData] = useState<any>(null);
+  /**
+  * Fetches dashboard data from API.
+  * Updates state with the fetched data if it's valid.
+  */
   const getData = async () => {
     let data = await props?.dashBoardAPI();
-    // console.log(data)
-
     if (!isNullUndefinedOrBlank(data) && !isEmptyObjectOrNullUndefiend(data.payload)) {
       data?.payload?.chartData?.map((key, index) => {
         key.value = JSON.parse(key.value)
-        // console.log(key.value)
+
       })
       setData(data.payload);
     }
-    // console.log(data.payload)
+
 
   }
 
@@ -59,7 +63,7 @@ const Dashboard = (props) => {
               <div className="form-group header-input mb-0">
                 {/* <DatePicker className="form-control form-control-sm" selected={startDate} onChange={(date) => setStartDate(date)} placeholder={<div>Select Date</div>}  /> */}
               </div>
-              <Button variant='white' size='sm' className='btn-icon-start'><i className='bi bi-funnel'></i> Filters</Button>
+              {/* <Button variant='white' size='sm' className='btn-icon-start'><i className='bi bi-funnel'></i> Filters</Button> */}
             </div>
           </div>
         </div>

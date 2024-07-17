@@ -121,7 +121,7 @@ const Login = (props) => {
             hiddenCaptcha: newData.hiddenCaptcha,
         }
         const response = await props.getVerifyCaptchaAPI(reqBody);
-        console.log(response);
+
         if (response) {
 
             return true;
@@ -196,7 +196,7 @@ const Login = (props) => {
      * Function to handle form submission for login.
      */
     const onSubmitForLogin = () => {
-        // console.log(vallues)
+
 
     }
     /**

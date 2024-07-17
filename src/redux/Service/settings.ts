@@ -57,6 +57,7 @@ export const upDateDataAPI =
                 dispatch(loading(false));
             }
         };
+
 export const changePasswordAPI =
     (objBody: any = undefined) =>
         async (dispatch: AppDispatch) => {

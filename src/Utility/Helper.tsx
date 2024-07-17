@@ -68,7 +68,7 @@ export const decrypted = (obj) => {
     padding: CryptoJS.pad.Pkcs7
   });
   var originalText = bytes.toString(CryptoJS.enc.Utf8);
-  console.log(obj, "in Function", originalText, "text", bytes.toString(CryptoJS.enc.Utf8));
+  // console.log(obj, "in Function", originalText, "text", bytes.toString(CryptoJS.enc.Utf8));
   if (isNullUndefinedOrBlank(originalText)) {
     return;
   }
