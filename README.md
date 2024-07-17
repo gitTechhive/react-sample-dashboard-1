@@ -1,4 +1,4 @@
-# Estimator Bob Front
+# react-sample-dashboard-1
 
 ## Getting Started
 
