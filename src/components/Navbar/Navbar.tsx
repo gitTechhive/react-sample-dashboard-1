@@ -31,16 +31,13 @@ const Navbar = (props) => {
   const [profileUrl, setProfileUrl] = useState<string>(getProfileId() as any)
   const [name, setName] = useState<string>(getName() as any)
   useEffect(() => {
-    if (!isNullUndefinedOrBlank(props.profile)) {
-      setProfileUrl(props?.profile?.profilePicUrl)
-      setName(`${props?.profile?.firstName} ${props?.profile?.lastName}`)
-    }
-
-    return () => {
+    if (isNullUndefinedOrBlank(props.profile)) {
       setProfileUrl(getProfileId() as any)
       setName(getName() as any)
-    };
-
+      return;
+    }
+    setProfileUrl(props?.profile?.profilePicUrl)
+    setName(`${props?.profile?.firstName} ${props?.profile?.lastName}`)
   }, [props.profile]);
 
   return (
