@@ -2,6 +2,8 @@ import { RooteAction } from "../store";
 import {
   GET_LOGIN_FAILURE,
   GET_LOGIN_SUCCESS,
+  GET_LOGIN_WITH_MOBILE_NO_FAILURE,
+  GET_LOGIN_WITH_MOBILE_NO_SUCCESS,
   GET_LOGOUT_FAILURE,
   GET_LOGOUT_SUCCESS,
   RESET_STATE,
@@ -12,6 +14,8 @@ export interface LoginInitializeState {
   loginSuccess: boolean;
   /**Contains login-related data  */
   loginData: any;
+  /**Contains login-related data  */
+  loginWithMobileNoData: any;
   /** Indicates whether the logout was successful */
   logoutSuccess: boolean;
   /** Contains user-related data */
@@ -23,6 +27,7 @@ export interface LoginInitializeState {
 const initialState: LoginInitializeState = {
   loginSuccess: false,
   loginData: [],
+  loginWithMobileNoData: [],
   logoutSuccess: false,
   userData: [],
   loading: false,
@@ -52,6 +57,21 @@ function LoginReducer(
         ...state,
         loginSuccess: false,
         loginData: null,
+        loading: false,
+      };
+    case GET_LOGIN_WITH_MOBILE_NO_SUCCESS:
+      return {
+        ...state,
+        loginSuccess: true,
+        loginWithMobileNoData: action.payload,
+        loading: false,
+      };
+
+    case GET_LOGIN_WITH_MOBILE_NO_FAILURE:
+      return {
+        ...state,
+        loginSuccess: false,
+        loginWithMobileNoData: null,
         loading: false,
       };
 

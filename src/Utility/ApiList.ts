@@ -7,9 +7,42 @@
 export const GET_REGISTER_DATA_API = "api/account/create";
 /** API endpoint for user login */
 export const GET_LOGIN_DATA_API = "login";
+/** API endpoint for user login */
+export const GET_LOGIN_WITH_MOBILE_NO_DATA_API = "loginPhoneNo";
 /** API endpoint for fetching city data  */
-export const GET_CITY_DATA_API = "city";
+export const GET_CITY_DATA_API = "master/citiesDropdown";
 /** API endpoint for fetching state data */
-export const GET_STATE_DATA_API = "state";
+export const GET_STATE_DATA_API = "master/statesDropdown";
 /**API endpoint for fetching country data  */
-export const GET_COUNTRY_DATA_API = "country";
+export const GET_COUNTRY_DATA_API = "master/countriesDropdown";
+/**API endpoint for fetching country Prefix data  */
+export const GET_COUNTRY_PREFIX_DATA_API = "master/countryCodes";
+/**API endpoint for fetching Captcha data  */
+export const GET_GENERATE_CAPTCHA_DATA_API = "captcha/generate";
+/**API endpoint for fetching Captcha data  */
+export const GET_REGENERATE_CAPTCHA_DATA_API = "captcha/reGenerate";
+/**API endpoint for fetching Captcha Verification data  */
+export const GET_VERIFY_CAPTCHA_DATA_API = "captcha/verification";
+/** API endpoint for sending OTP to email. */
+export const SEND_OTP_EMAIL_DATA_API = "users/sendOtp";
+/** API endpoint for sending OTP to email. */
+export const SEND_OTP_TO_EMAIL_FOR_FORGOT_PASSWORD_API = "forgotPassOtpGeneratorAdmin";
+/** API endpoint for verifying OTP for forgot password. */
+export const VERIFY_OTP_FOR_FORGOT_PASSWORD_API = "forgotPassOtpVerificationAdmin";
+/** API endpoint for sending OTP to mobile number. */
+export const SEND_OTP_TO_MOBILE_NO_DATA_API = "sendOtpLoginPhoneNo";
+/**API endpoint for Sign up data  */
+export const SIGN_UP_DATA_API = "users/";
+/** API endpoint for submitting forgot password data. */
+export const FORGOT_PASSWORD_DATA_API = "forgotPwd";
+/**API endpoint for Google Sign up data  */
+export const SIGN_UP_WITH_GOOGLE_DATA_API = "users/singUpGoogle";
+/**API endpoint for Google Sign up data  */
+export const GET_GOOGLE_USERS_DATA_API = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+/**
+* 
+*/
+export const DASHBOARD = "charts";
+export const GET_PROFILE = "users/getUserData"
+export const UPDATE_PROFILE = "users/updateUser"
+export const CHANGE_PASSWORD = "changePwd"

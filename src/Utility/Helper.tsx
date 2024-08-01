@@ -68,7 +68,7 @@ export const decrypted = (obj) => {
     padding: CryptoJS.pad.Pkcs7
   });
   var originalText = bytes.toString(CryptoJS.enc.Utf8);
-  console.log(obj, "in Function", originalText, "text", bytes.toString(CryptoJS.enc.Utf8));
+  // console.log(obj, "in Function", originalText, "text", bytes.toString(CryptoJS.enc.Utf8));
   if (isNullUndefinedOrBlank(originalText)) {
     return;
   }
@@ -78,6 +78,10 @@ export const decrypted = (obj) => {
 }
 
 
+// get token of loggedIn user
+export const setToken = (val): any => {
+  return localStorage.setItem("token", val);
+};
 // get token of loggedIn user
 /** Function to get the token of the logged-in user from local storage. */
 export const getToken = (): returnTypeForString => {
@@ -95,7 +99,7 @@ export const getClientId = (): returnTypeForString => {
 // get token of loggedIn user
 /** Function to get the name of the logged-in user from local storage. */
 export const getName = (): returnTypeForString => {
-  return localStorage.getItem("userName");
+  return localStorage.getItem("name");
 };
 // get token of loggedIn user
 /** Function to get the role name of the logged-in user from local storage. */
@@ -106,7 +110,7 @@ export const getRoleName = (): returnTypeForString => {
 // get id of loggedIn user
 /** Function to get the profile ID of the logged-in user from local storage. */
 export const getProfileId = (): returnTypeForString => {
-  return localStorage.getItem("profile_id");
+  return localStorage.getItem("profile_Url");
 };
 // get UserId
 /** Function to get the user ID of the logged-in user from local storage. */

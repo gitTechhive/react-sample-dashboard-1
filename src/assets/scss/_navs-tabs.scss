@@ -1,0 +1,18 @@
+.nav-tabs {
+    border: 0;
+    gap: 8px;
+
+    .nav-link {
+        border-radius: 4px !important;
+        background-color: transparent;
+        color: #6F767E;
+        border: 0px solid transparent;
+        font-size: 15px;
+        font-weight: 600;
+
+        &.active {
+            background-color: #EFEFEF;
+            color: #1A1D1F;
+        }
+    }
+}

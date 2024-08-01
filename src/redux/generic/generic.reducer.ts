@@ -1,5 +1,5 @@
 import { RooteAction } from "../store";
-import { GET_STATES_SUCCESS, GET_STATES_FAILURE, GET_COUNTRY_SUCCESS, GET_COUNTRY_FAILURE, DEFAULT_REDUX_SUCCESS, DEFAULT_REDUX_FAILURE } from './generic.type';
+import { GET_STATES_SUCCESS, GET_STATES_FAILURE, GET_COUNTRY_SUCCESS, GET_COUNTRY_FAILURE, DEFAULT_REDUX_SUCCESS, DEFAULT_REDUX_FAILURE, GET_COUNTRY_PREFIX_FAILURE, GET_COUNTRY_PREFIX_SUCCESS, GET_GENERATE_CAPTCHA_FAILURE, GET_GENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_SUCCESS, GET_REGENERATE_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_FAILURE, GET_VERIFY_CAPTCHA_SUCCESS, SEND_OTP_SUCCESS, SEND_OTP_FAILURE } from './generic.type';
 import {
   GET_DATA_FOR_DROPDOWN_SUCCESS,
   GET_DATA_FOR_DROPDOWN_FAILURE,
@@ -24,8 +24,18 @@ export interface GenericInitialState {
   stateData: any;
   /** Data for cities. */
   cityData: any;
-  /** Data for countries. */
+  /** Data for countries . */
   countryData: any;
+  /** Data for countries prefix. */
+  countryPrefixData: any;
+  /** Data for generate captcha Data . */
+  generateCaptchData: any;
+  /** Data for regenerate captcha Data . */
+  regenerateCaptchData: any;
+  /** Data for verify captcha Data . */
+  verifyCaptchData: any;
+   /** Contains data related to OTP sending */
+   sendOtpData: any;
   /** Flag indicating websocket connection status. */
   webSocketFlag: boolean;
   /** Flag indicating default Redux action status. */
@@ -41,6 +51,11 @@ const initialState: GenericInitialState = {
   stateData: null,
   cityData: null,
   countryData: null,
+  countryPrefixData: null,
+  generateCaptchData: null,
+  regenerateCaptchData: null,
+  verifyCaptchData: null,
+  sendOtpData:null,
   webSocketFlag: false,
   defaultRedux: true,
   loading: false,
@@ -94,6 +109,74 @@ const genericReducer = (
       return {
         ...state,
         webSocketFlag: false,
+        loading: false,
+      };
+
+      case SEND_OTP_SUCCESS:
+        return {
+            ...state,
+         
+            sendOtpData: action.payload,
+            loading: false,
+        };
+
+    case SEND_OTP_FAILURE:
+        return {
+            ...state,
+      
+            sendOtpData: null,
+            loading: false,
+        };
+
+    case GET_GENERATE_CAPTCHA_SUCCESS:
+      return {
+        ...state,
+        generateCaptchData: action.payload,
+        loading: false,
+      };
+
+    case GET_GENERATE_CAPTCHA_FAILURE:
+      return {
+        ...state,
+        generateCaptchData: null,
+        loading: false,
+      };
+    case GET_REGENERATE_CAPTCHA_SUCCESS:
+      return {
+        ...state,
+        regenerateCaptchData: action.payload,
+        loading: false,
+      };
+
+    case GET_REGENERATE_CAPTCHA_FAILURE:
+      return {
+        ...state,
+        regenerateCaptchData: null,
+        loading: false,
+      };
+    case GET_VERIFY_CAPTCHA_SUCCESS:
+      return {
+        ...state,
+        verifyCaptchData: action.payload,
+        loading: false,
+      };
+    case GET_VERIFY_CAPTCHA_FAILURE:
+      return {
+        ...state,
+        verifyCaptchData: null,
+        loading: false,
+      };
+    case GET_COUNTRY_PREFIX_SUCCESS:
+      return {
+        ...state,
+        countryPrefixData: action.payload,
+        loading: false,
+      };
+
+    case GET_COUNTRY_PREFIX_FAILURE:
+      return {
+        ...state,
+        countryPrefixData: null,
         loading: false,
       };
 

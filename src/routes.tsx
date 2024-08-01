@@ -5,13 +5,18 @@ import Login from './pages/auth/Login/Login';
 import Dashboard from './pages/admin/Dashboard/Dashboard';
 import { RouterProps } from './interfaces';
 import { ENUMFORROUTES } from './interfaces/interface';
-import { Navbar } from 'react-bootstrap';
 import Sidebar from './components/Sidebar/Sidebar';
 import GuestRoute from './common/GuestRoute';
 import AuthRoute from './common/AuthRoute';
 import NotFound from './components/NotFound/NotFound';
 import UserMangement from './pages/admin/UserMangement/UserMangement';
 import { jwtDecode } from "jwt-decode";
+import Signup from './pages/auth/Signup/Signup';
+import ForgotPassword from './pages/auth/FrogotPassword/ForgotPassword';
+import Navbar from './components/Navbar/Navbar';
+import Settings from './pages/admin/Settings/Settings';
+
+
 
 /** Define private  routes */
 const privateRoutes: RouterProps[] = [
@@ -22,12 +27,12 @@ const privateRoutes: RouterProps[] = [
     url: ENUMFORROUTES.DASHBOARD,
   },
   {
-    path: ENUMFORROUTES.USER_MANGEMNET,
-    component: <UserMangement />,
+    path: ENUMFORROUTES.SETTINGS,
+    component: <Settings />,
     caseSensitive: true,
-    url: ENUMFORROUTES.DASHBOARD,
+    url: ENUMFORROUTES.SETTINGS,
   },
-  
+
 
 ];
 /** Define public Routes */
@@ -40,6 +45,16 @@ const publicRoutes: RouterProps[] = [
   {
     path: ENUMFORROUTES.LOGIN,
     component: <Login />,
+    caseSensitive: true,
+  },
+  {
+    path: ENUMFORROUTES.SIGN_UP,
+    component: <Signup />,
+    caseSensitive: true,
+  },
+  {
+    path: ENUMFORROUTES.FORGOT_PASSWORD,
+    component: <ForgotPassword />,
     caseSensitive: true,
   },
 
@@ -57,11 +72,14 @@ const publicRoutes: RouterProps[] = [
  * @returns {JSX.Element} JSX element representing the AppRouter component
  */
 const AppRouter = (props): JSX.Element => {
-/** Check if the user is authenticated  */
+  /** Check if the user is authenticated  */
   const isAuthenticated = getToken() !== null ? true : false;
+
+
+
   /** State to manage private route list */
   const [privateRouteList, setPrivateRouteList] = useState<RouterProps[]>([]);
-//roles and Righs Start
+  //roles and Righs Start
   // useEffect(() => {
 
   //   if (isAuthenticated === false) {
@@ -76,10 +94,10 @@ const AppRouter = (props): JSX.Element => {
   //     return;
   //   }
 
-    // let token: any = localStorage.getItem("token");
+  // let token: any = localStorage.getItem("token");
 
-    //  const decode: any = jwtDecode(token);
-    //  console.log(decode,"decode value");
+  //  const decode: any = jwtDecode(token);
+
   //   const decode: any =[ENUMFORROUTES.DASHBOARD,ENUMFORROUTES.REPORTS]
   //   const newPageData = [...decode];
 
@@ -109,36 +127,36 @@ const AppRouter = (props): JSX.Element => {
   //   let jsx: any = null;
 
   //   switch (url) {
-    
+
   //     case ENUMFORROUTES.DASHBOARD:
   //       jsx = <Dashboard accessType={accessType} />
   //       break;
   //     case ENUMFORROUTES.REPORTS:
   //       jsx = <Reports accessType={accessType} />
   //       break;
-    
+
 
   //     default:
   //       break;
   //   }
   //   return jsx;
   // }
-  // React.useEffect(() => {
-  //   document.documentElement.setAttribute('data-layout', 'vertical');
-  //   document.documentElement.setAttribute('data-sidebar-size', 'lg');
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-layout', 'vertical');
+    document.documentElement.setAttribute('data-sidebar-size', 'lg');
 
-  //   // var verticalOverlay = document.getElementsByClassName("vertical-overlay");
-  //   // if (verticalOverlay) {
-  //   //   verticalOverlay[0].addEventListener("click", function () {
-  //   //     document.body.classList.remove("vertical-sidebar-enable");
-  //   //   });
-  //   // }
+    // var verticalOverlay = document.getElementsByClassName("vertical-overlay");
+    // if (verticalOverlay) {
+    //   verticalOverlay[0].addEventListener("click", function () {
+    //     document.body.classList.remove("vertical-sidebar-enable");
+    //   });
+    // }
 
-  //   const windowSize = document.documentElement.clientWidth;
-  //   if (windowSize == 768) {
-  //     document.documentElement.setAttribute('data-sidebar-size', 'sm');
-  //   }
-  // }, [isAuthenticated]);
+    const windowSize = document.documentElement.clientWidth;
+    if (windowSize == 768) {
+      document.documentElement.setAttribute('data-sidebar-size', 'sm');
+    }
+  }, [isAuthenticated]);
 
 
 
@@ -222,20 +240,19 @@ const AppRouter = (props): JSX.Element => {
   //     </Router>
   //   </div>
   // )
- // role sight end
+  // role sight end
+
   return (
 
     <div className={isAuthenticated ? 'layout-wrapper' : ''} id={isAuthenticated ? "layout-wrapper" : ''}>
       <Router>
-        {isAuthenticated && (
-
+        {isAuthenticated &&
           <Navbar />
-        )}
+        }
 
-        {isAuthenticated && (
-
+        {isAuthenticated &&
           <Sidebar />
-        )}
+        }
         <div className={isAuthenticated ? 'main-content' : ''}>
           <React.Suspense
             fallback={<div className="lazy-loading">Loading...</div>}
@@ -266,10 +283,10 @@ const AppRouter = (props): JSX.Element => {
 
 
               ))}
-             
-                <Route path="*" element={<NotFound />} />
 
-       
+              <Route path="*" element={<NotFound />} />
+
+
             </Routes>
           </React.Suspense>
         </div>
