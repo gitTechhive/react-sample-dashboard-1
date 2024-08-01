@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './assets/css/bootstrap-icons.css';
 import { Toaster } from 'react-hot-toast';
 import Loader from './common/Loader';
 import { RootState } from './redux/store';

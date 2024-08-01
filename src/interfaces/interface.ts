@@ -31,6 +31,9 @@ export const ENUMFORROUTES = {
   LOGIN: "/login",
   ACCESS_DENIED: "/access-denied",
   USER_MANGEMNET: "/user-mangemnet",
+  FORGOT_PASSWORD: "/forgot-password",
+  SIGN_UP: "/sign-up",
+  SETTINGS: "/settings",
 
 }
 
@@ -42,6 +45,43 @@ export const ENUMFORROUTES = {
 export const ENUMFORACCOUNTTAB = {
   PERSONAL_DETAILS: "Personal Details",
   UPDATE_PASSWORD: "Update Password"
+
+} as const;
+
+/**
+ * Enum for Login tab names.
+ */
+export const ENUMFORLOGINTAB = {
+  EMAIL: "email",
+  MOBILE_NO: "mobile no",
+  VERIFY_OTP: "Verify Otp"
+
+} as const;
+/**
+ * Enum for Login tab names.
+ */
+export const ENUMFORFORGOTPASSWORDSTEP = {
+  EMAIL: "email",
+  VERIFY_OTP: "verify otp",
+  CHANGE_PASSWORD: "change Password",
+  CHANGED_COMPLETED: "changed completed"
+
+} as const;
+/**
+ * Enum for Sign up step names.
+ */
+export const ENUMFORSIGNUPSTEP = {
+  USER_DETAILS: "User Details",
+  VERIFY_OTP: "Verify Otp"
+
+} as const;
+/**
+ * Enum for Sign/Login up Option names.
+ */
+export const ENUMFORSIGNUPORLOGINOPTION = {
+  GOOGLE: "google",
+  EMAIL: "email",
+  MOBILE_NO: "mobile no"
 
 } as const;
 /**
@@ -164,7 +204,71 @@ export interface Notification {
  * Login data interface.
  */
 export interface LoginData {
-  userEmail: string;
-  password: string;
+  email?: string;
+  password?: string;
+  type?: string;
+  googleId?: string;
+  uuid?: string;
+  phoneNo?: any;
+  otp?: any;
+  countryCode?: any;
+  hiddenCaptcha?: any;
+}
+/**
+ * SignUpData interface.
+ */
+export interface SignUpData {
+  firstName: string;
+  lastName: string;
+  countryCode: string;
+  email: string;
+  mobileNo: string;
+  uuid?: string;
+  otp?: string;
+  requestId?: string;
+  hiddenCaptcha?: string;
 
 }
+/**
+ * Forgot Password data interface.
+ */
+export interface ForgotPasswordData {
+  email: string;
+  otp?: string;
+  password: string;
+  confirmPassword?: string;
+
+}
+
+/**
+ * Forgot Password data interface.
+ */
+export interface UserDataInterface {
+
+  firstName: string,
+  lastName: string,
+  address: any,
+  pinCode?: any,
+  mobileNo: any,
+  bio?: any,
+  email: string,
+  phonecode?: any,
+  country_id?: any,
+  state_id?: any,
+  cities_id?: any,
+  original_name?: string,
+  profilePicUrl?: string,
+  country?: string,
+  state?: string,
+  cities?: string,
+  profilePic?: any
+
+}
+
+
+export const SUPPORTED_FORMATS = [
+  "image/jpg",
+  "image/jpeg",
+  "image/gif",
+  "image/png",
+];

@@ -2,6 +2,8 @@ import { RooteAction } from "../store";
 import {
   GET_LOGIN_FAILURE,
   GET_LOGIN_SUCCESS,
+  GET_LOGIN_WITH_MOBILE_NO_FAILURE,
+  GET_LOGIN_WITH_MOBILE_NO_SUCCESS,
   GET_LOGOUT_FAILURE,
   GET_LOGOUT_SUCCESS,
   RESET_STATE,
@@ -21,6 +23,21 @@ export const getLoginSuccess = (obj): RooteAction => {
  */
 export const getLoginFailure = (): RooteAction => {
   return { type: GET_LOGIN_FAILURE, payload: {} };
+};
+/**
+ * Action creator function to dispatch action when login is successful.
+ * @param obj Object containing login data.
+ * @returns Action object with type and payload.
+ */
+export const getLoginWithMobileNoSuccess = (obj): RooteAction => {
+  return { type: GET_LOGIN_WITH_MOBILE_NO_SUCCESS, payload: obj };
+};
+/**
+ * Action creator function to dispatch action when login fails.
+ * @returns Action object with type and an empty payload.
+ */
+export const getLoginWithMobileNoFailure = (): RooteAction => {
+  return { type: GET_LOGIN_WITH_MOBILE_NO_FAILURE, payload: {} };
 };
 /**
  * Action creator function to dispatch action when logout is successful.
